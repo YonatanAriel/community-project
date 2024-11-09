@@ -1,0 +1,6 @@
+User-agent: * 
+# Disallow everything for dev mode, i should change it in production to allow everything (Disallow: , Allow: /)
+Disallow: /  
+Allow: 
+#should add the website url
+Sitemap: 
