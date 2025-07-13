@@ -1,5 +1,5 @@
-import MainContext from "@/context/MainContext";
-import AppRoutes from "@/routes/Routes";
+import MainContext from '@/context/MainContext';
+import AppRoutes from '@/routes/Routes';
 
 function Layout() {
   return (
