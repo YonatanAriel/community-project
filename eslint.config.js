@@ -3,6 +3,8 @@ import globals from "globals";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
+import pluginPrettier from "eslint-plugin-prettier";
+import configPrettier from "eslint-config-prettier/flat"; // disables conflicting rules
 
 export default [
   { ignores: ["dist"] },
@@ -22,6 +24,7 @@ export default [
       react,
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      prettier: pluginPrettier,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -34,6 +37,8 @@ export default [
         { allowConstantExport: true },
       ],
       "react/prop-types": "off",
+      "prettier/prettier": "error", 
     },
   },
+  configPrettier, 
 ];
