@@ -1,3 +1,4 @@
+import Home from "@/pages/Home";
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -7,8 +8,8 @@ import { Routes, Route } from "react-router-dom";
 function AppRoutes() {
   return (
     <Routes>
-      {/* <Route path="/" element={<MyMainPage />} />
-      <Route
+      <Route path="/" element={<Home />} />
+      {/* <Route
         path="some example path"
         element={
           <Suspense fallback={<div>Loading...</div>}>
