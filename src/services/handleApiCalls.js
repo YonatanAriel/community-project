@@ -16,6 +16,7 @@ const api = {
     return apiCalls("DELETE", url, undefined, headers);
   },
 };
+
 async function apiCalls(method, url, data, headers = {}) {
   try {
     const res = await axios({

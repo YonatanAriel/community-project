@@ -1,20 +1,20 @@
 # 🌿 Git Feature Branch Workflow
 
-This guide explains how to work on a feature branch, keep it updated with `develop`, and clean up after merging.
+This guide explains how to work on a feature branch, keep it updated with `dev`, and clean up after merging.
 
 ---
 
 ## 🚀 Start a New Feature Branch
 
 ```bash
-git checkout develop
-# Switch to the develop branch
+git checkout dev
+# Switch to the dev branch
 
-git pull origin develop
-# Update local develop with latest remote changes
+git pull origin dev
+# Update local dev with latest remote changes
 
-git checkout -b feature/branch-name develop
-# Create and switch to a new feature branch from develop
+git checkout -b feature/branch-name dev
+# Create and switch to a new feature branch from dev
 ```
 
 ---
@@ -34,24 +34,24 @@ git push origin feature/branch-name
 
 ---
 
-## 🔄 Keep Feature Branch Updated with `develop`
+## 🔄 Keep Feature Branch Updated with `dev`
 
 ```bash
 git add .
-git commit -m "Saving work before updating from develop"
+git commit -m "Saving work before updating from dev"
 # Save current work
 
-git checkout develop
-# Switch to develop
+git checkout dev
+# Switch to dev
 
-git pull origin develop
+git pull origin dev
 # Get latest changes
 
 git checkout feature/branch-name
 # Switch back to feature branch
 
-git merge develop
-# Merge latest develop into feature branch
+git merge dev
+# Merge latest dev into feature branch
 
 git push origin feature/branch-name
 # Push updated branch to remote
@@ -68,7 +68,7 @@ git push origin feature/branch-name
 git add .
 # Stage resolved files
 
-git commit -m "Resolve merge conflicts with develop"
+git commit -m "Resolve merge conflicts with dev"
 # Commit the resolution
 ```
 
