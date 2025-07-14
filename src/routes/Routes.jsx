@@ -3,6 +3,7 @@ import AdminDashboard from '@/components/layout/AdminDashboard';
 import AiMatching from '@/pages/AiMatching';
 import Profile from '@/pages/Profile';
 import MemberProfile from '@/pages/MemberProfile';
+import ConnectionsRequests from '@/pages/ConnectionsRequests';
 import { Routes, Route } from 'react-router-dom';
 
 function AppRoutes() {
@@ -11,10 +12,7 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<AdminDashboard />} />
       <Route path="/ai-matching" element={<AiMatching />} />
-      <Route
-        path="/connections-requests"
-        element={<div>Connections Requests</div>}
-      />
+      <Route path="/connections-requests" element={<ConnectionsRequests />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/member/:id" element={<MemberProfile />} />
     </Routes>
