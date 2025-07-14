@@ -78,3 +78,105 @@ export const membersMockData = [
       'Strategic product manager with experience launching successful digital products. Skilled in market analysis, user research, and cross-functional team leadership.',
   },
 ];
+
+export const connectionRequestsMockData = [
+  {
+    id: 1,
+    from_user_id: 2,
+    to_user_id: 1,
+    reason:
+      'Hi Sarah, I saw your profile and would love to connect. I think we could collaborate on some interesting projects!',
+    status: 'pending',
+    requested_at: '2025-01-10T10:30:00Z',
+    responded_at: null,
+    from_user: {
+      id: 2,
+      user_name: 'Michael Chen',
+      email: 'michael.chen@email.com',
+      photo_url:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+    },
+    to_user: {
+      id: 1,
+      user_name: 'Sarah Johnson',
+      email: 'sarah.johnson@email.com',
+      photo_url:
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    },
+  },
+  {
+    id: 2,
+    from_user_id: 3,
+    to_user_id: 1,
+    reason:
+      "Hello! I'd love to connect and discuss potential collaboration opportunities.",
+    status: 'pending',
+    requested_at: '2025-01-12T14:20:00Z',
+    responded_at: null,
+    from_user: {
+      id: 3,
+      user_name: 'Emily Rodriguez',
+      email: 'emily.rodriguez@email.com',
+      photo_url:
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    },
+    to_user: {
+      id: 1,
+      user_name: 'Sarah Johnson',
+      email: 'sarah.johnson@email.com',
+      photo_url:
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    },
+  },
+  {
+    id: 3,
+    from_user_id: 6,
+    to_user_id: 1,
+    reason:
+      "Hey Sarah, I'm working on a new product and would love to get your technical insights.",
+    status: 'pending',
+    requested_at: '2025-01-13T09:15:00Z',
+    responded_at: null,
+    from_user: {
+      id: 6,
+      user_name: 'Alex Thompson',
+      email: 'alex.thompson@email.com',
+      photo_url:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+    },
+    to_user: {
+      id: 1,
+      user_name: 'Sarah Johnson',
+      email: 'sarah.johnson@email.com',
+      photo_url:
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    },
+  },
+];
+
+export const connectionsMockData = [
+  {
+    id: 1,
+    user: {
+      id: 4,
+      user_name: 'David Kim',
+      email: 'david.kim@email.com',
+      photo_url:
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+    },
+    connected_at: '2025-01-05T16:45:00Z',
+    status: 'connected',
+  },
+  {
+    id: 2,
+    user: {
+      id: 5,
+      user_name: 'Lisa Wang',
+      email: 'lisa.wang@email.com',
+      photo_url:
+        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
+    },
+    connected_at: '2025-01-08T11:20:00Z',
+    status: 'connected',
+  },
+];
