@@ -1,4 +1,6 @@
+import AdminDashboard from '@/components/layout/AdminDashboard';
+
 function Home() {
-  return <div className="text-green-300">Home</div>;
+  return <AdminDashboard />;
 }
 export default Home;
