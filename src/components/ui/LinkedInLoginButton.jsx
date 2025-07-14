@@ -3,7 +3,7 @@ import { Button } from './button';
 function LinkedInLoginButton() {
   const handleLinkedInLogin = () => {
     const CLIENT_ID = import.meta.env.VITE_LINKEDIN_CLIENT_ID;
-    const REDIRECT_URI = 'httpלא://localhost:4001/auth/linkedin/callback';
+    const REDIRECT_URI = 'https://localhost:4001/auth/linkedin/callback';
     const SCOPE = 'openid profile email';
     const STATE = 'secure-random-state-123';
     
