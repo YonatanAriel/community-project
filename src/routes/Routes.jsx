@@ -1,4 +1,4 @@
-import Dashboard from '@/pages/Dashboard';
+import Dashboard from '@/pages/Home';
 import Home from '@/pages/Home';
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Routes, Route } from 'react-router-dom';
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/" element={<Home />} />
 
       {/* <Route
         path="some example path"
