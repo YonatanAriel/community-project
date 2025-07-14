@@ -1,7 +1,6 @@
 import api from './handleApiCalls';
 import { API } from '@/constants/api';
 
-// Connection Requests API calls
 export const getConnectionRequests = async () => {
   try {
     return await api.get(API.ENDPOINTS.CONNECTION_REQUESTS);
@@ -33,7 +32,6 @@ export const rejectConnectionRequest = async (requestId) => {
   }
 };
 
-// Connections API calls
 export const getConnections = async () => {
   try {
     return await api.get(API.ENDPOINTS.CONNECTIONS);
@@ -62,6 +60,17 @@ export const sendConnectionRequest = async (toUserId, reason) => {
     });
   } catch (error) {
     console.error('Error sending connection request:', error);
+    throw error;
+  }
+};
+
+export const getAiRecommendations = async (inputText) => {
+  try {
+    return await api.post(API.ENDPOINTS.AI_RECOMMENDATIONS, {
+      input_text: inputText,
+    });
+  } catch (error) {
+    console.error('Error fetching AI recommendations:', error);
     throw error;
   }
 };
