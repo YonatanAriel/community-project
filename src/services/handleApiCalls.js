@@ -1,19 +1,19 @@
-import axios from "axios";
+import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = 'http://localhost:4000';
 
 const api = {
   get: async (url, headers) => {
-    return apiCalls("GET", url, undefined, headers);
+    return apiCalls('GET', url, undefined, headers);
   },
   post: async (url, data, headers) => {
-    return apiCalls("POST", url, data, headers);
+    return apiCalls('POST', url, data, headers);
   },
   put: async (url, data, headers) => {
-    return apiCalls("PUT", url, data, headers);
+    return apiCalls('PUT', url, data, headers);
   },
   delete: async (url, headers) => {
-    return apiCalls("DELETE", url, undefined, headers);
+    return apiCalls('DELETE', url, undefined, headers);
   },
 };
 
