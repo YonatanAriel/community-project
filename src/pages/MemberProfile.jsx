@@ -35,15 +35,13 @@ function MemberProfile() {
       <ProfileHeader onBack={() => navigate(-1)} />
 
       <div className="mb-6">
-        <ProfileCard member={member} />
-
-        <div className="flex justify-end mt-4">
+        <ProfileCard member={member}>
           <ConnectButton
             userId={member.id}
             userName={member.user_name}
             initialStatus="none"
           />
-        </div>
+        </ProfileCard>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
