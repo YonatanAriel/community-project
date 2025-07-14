@@ -37,3 +37,10 @@ export const NAVIGATION_ITEMS = [
     label: SIDEBAR_LABELS.USER_PROFILE,
   },
 ];
+
+export const CONNECTION_STATUS = {
+  PENDING: 'pending',
+  ACCEPTED: 'accepted',
+  REJECTED: 'rejected',
+  CONNECTED: 'connected',
+};

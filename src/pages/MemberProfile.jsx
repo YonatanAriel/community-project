@@ -7,6 +7,7 @@ import SkillsSection from '@/components/ui/SkillsSection';
 import InterestsSection from '@/components/ui/InterestsSection';
 import JobTitlesSection from '@/components/ui/JobTitlesSection';
 import IndustriesSection from '@/components/ui/IndustriesSection';
+import ConnectButton from '@/components/ui/ConnectButton';
 
 function MemberProfile() {
   const { id } = useParams();
@@ -32,7 +33,17 @@ function MemberProfile() {
   return (
     <div className="container px-4 py-8 mx-auto">
       <ProfileHeader onBack={() => navigate(-1)} />
-      <ProfileCard member={member} />
+
+      <div className="mb-6">
+        <ProfileCard member={member}>
+          <ConnectButton
+            userId={member.id}
+            userName={member.user_name}
+            initialStatus="none"
+          />
+        </ProfileCard>
+      </div>
+
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <SkillsSection skills={member.skills} />
         <InterestsSection interests={member.interests} />
