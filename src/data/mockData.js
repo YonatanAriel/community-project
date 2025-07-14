@@ -128,30 +128,6 @@ export const connectionRequestsMockData = [
         'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
     },
   },
-  {
-    id: 3,
-    from_user_id: 6,
-    to_user_id: 1,
-    reason:
-      "Hey Sarah, I'm working on a new product and would love to get your technical insights.",
-    status: 'pending',
-    requested_at: '2025-01-13T09:15:00Z',
-    responded_at: null,
-    from_user: {
-      id: 6,
-      user_name: 'Alex Thompson',
-      email: 'alex.thompson@email.com',
-      photo_url:
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-    },
-    to_user: {
-      id: 1,
-      user_name: 'Sarah Johnson',
-      email: 'sarah.johnson@email.com',
-      photo_url:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
-    },
-  },
 ];
 
 export const connectionsMockData = [
