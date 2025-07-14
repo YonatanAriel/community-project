@@ -1,22 +1,22 @@
-import Home from "@/pages/Home";
-import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
-
-// import ExamplePageComponent from "@/pages/ExamplePageComponent"
-// const ExamplePageComponent = lazy(() => import("@/pages/ExamplePageComponent"));
+import Home from '@/pages/Home';
+import AdminDashboard from '@/components/layout/AdminDashboard';
+import AiMatching from '@/pages/AiMatching';
+import Profile from '@/pages/Profile';
+import MemberProfile from '@/pages/MemberProfile';
+import { Routes, Route } from 'react-router-dom';
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      {/* <Route
-        path="some example path"
-        element={
-          <Suspense fallback={<div>Loading...</div>}>
-            <ExamplePageComponent />
-          </Suspense>
-        }
-      /> */}
+      <Route path="/dashboard" element={<AdminDashboard />} />
+      <Route path="/ai-matching" element={<AiMatching />} />
+      <Route
+        path="/connections-requests"
+        element={<div>Connections Requests</div>}
+      />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/member/:id" element={<MemberProfile />} />
     </Routes>
   );
 }
