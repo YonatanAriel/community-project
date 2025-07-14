@@ -2,6 +2,7 @@ import Home from '@/pages/Home';
 import AdminDashboard from '@/components/layout/AdminDashboard';
 import AiMatching from '@/pages/AiMatching';
 import Profile from '@/pages/Profile';
+import MemberProfile from '@/pages/MemberProfile';
 import { Routes, Route } from 'react-router-dom';
 
 function AppRoutes() {
@@ -15,6 +16,7 @@ function AppRoutes() {
         element={<div>Connections Requests</div>}
       />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/member/:id" element={<MemberProfile />} />
     </Routes>
   );
 }

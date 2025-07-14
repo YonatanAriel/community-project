@@ -1,9 +1,19 @@
 import { TableRow, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 function MemberTableRow({ member }) {
+  const navigate = useNavigate();
+
+  const handleRowClick = () => {
+    navigate(`/member/${member.id}`);
+  };
+
   return (
-    <TableRow className="hover:bg-muted/50">
+    <TableRow
+      className="hover:bg-muted/50 cursor-pointer transition-colors"
+      onClick={handleRowClick}
+    >
       <TableCell className="p-4">
         <div className="flex items-center gap-3">
           <img

@@ -11,14 +11,12 @@ function Sidebar() {
 
   return (
     <div className="flex flex-col w-64 h-screen border-r bg-background border-border">
-      {/* Header */}
       <div className="px-6 py-8">
         <h1 className="text-xl font-bold tracking-tight text-foreground">
           Community
         </h1>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 px-4 space-y-2">
         {NAVIGATION_ITEMS.map((item) => {
           const Icon = item.icon;
@@ -50,7 +48,6 @@ function Sidebar() {
         })}
       </nav>
 
-      {/* User Profile Section */}
       <div className="p-4 mt-auto border-t border-border">
         <div className="flex items-center gap-3 p-3 mb-3 rounded-lg bg-muted/50">
           <div className="flex items-center justify-center rounded-full w-9 h-9 bg-primary text-primary-foreground">
@@ -71,7 +68,6 @@ function Sidebar() {
           size="sm"
           className="justify-start w-full gap-2 text-muted-foreground hover:text-foreground"
           onClick={() => {
-            // Placeholder for logout functionality
             console.log('Logout clicked');
           }}
         >
