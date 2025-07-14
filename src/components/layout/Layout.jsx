@@ -5,9 +5,9 @@ import Sidebar from './Sidebar';
 function Layout() {
   return (
     <MainContext>
-      <div className="flex h-screen">
+      <div className="flex h-screen w-full">
         <Sidebar />
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 w-full min-w-0 overflow-auto">
           <AppRoutes />
         </main>
       </div>
