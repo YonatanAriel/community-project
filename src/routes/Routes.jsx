@@ -5,11 +5,13 @@ import Profile from '@/pages/Profile';
 import MemberProfile from '@/pages/MemberProfile';
 import ConnectionsRequests from '@/pages/ConnectionsRequests';
 import { Routes, Route } from 'react-router-dom';
+import Login from '@/pages/Login';
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<AdminDashboard />} />
       <Route path="/ai-matching" element={<AiMatching />} />
       <Route path="/connections-requests" element={<ConnectionsRequests />} />
