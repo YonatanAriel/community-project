@@ -2,6 +2,14 @@ import { Button } from '@/components/ui/button';
 import { Check, X } from 'lucide-react';
 
 function ActionButtons({ onAccept, onReject, requestId, loading = false }) {
+  if (
+    !requestId ||
+    typeof onAccept !== 'function' ||
+    typeof onReject !== 'function'
+  ) {
+    return null;
+  }
+
   return (
     <div className="flex gap-2">
       <Button
