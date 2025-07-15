@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './button';
+import { authenticateWithLinkedIn } from '@/services/apiCalls';
 
 function LinkedInLoginButton() {
   const [loginMessage, setLoginMessage] = useState('');
@@ -20,12 +21,24 @@ function LinkedInLoginButton() {
           popupRef.current.close();
         }
         
-        setLoginMessage('התחברת בהצלחה!');
-        
-        // ניווט לדף userprofile
-        setTimeout(() => {
-          navigate('/userprofile');
-        }, 1000);
+        // שליחת הקוד לשרת
+        if (code) {
+          authenticateWithLinkedIn(code)
+            .then((response) => {
+              setLoginMessage('התחברת בהצלחה!');
+              
+              // ניווט לדף userprofile
+              setTimeout(() => {
+                navigate('/userprofile');
+              }, 1000);
+            })
+            .catch((error) => {
+              setLoginMessage('שגיאה בהתחברות לשרת');
+              console.error('LinkedIn authentication error:', error);
+            });
+        } else {
+          setLoginMessage('שגיאה: קוד LinkedIn לא נמצא');
+        }
       } else if (event.data.type === 'LINKEDIN_LOGIN_ERROR') {
         setLoginMessage('שגיאה בהתחברות');
         console.error('LinkedIn Error:', event.data.error);
