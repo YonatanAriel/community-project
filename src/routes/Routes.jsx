@@ -6,19 +6,18 @@ import MemberProfile from '@/pages/MemberProfile';
 import ConnectionsRequests from '@/pages/ConnectionsRequests';
 import { Routes, Route } from 'react-router-dom';
 import Login from '@/pages/Login';
-import LinkedInCallback from '@/components/ui/LinkedInCallback';
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/linkedin" element={<LinkedInCallback />} />
       <Route path="/dashboard" element={<AdminDashboard />} />
       <Route path="/ai-matching" element={<AiMatching />} />
       <Route path="/connections-requests" element={<ConnectionsRequests />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/member/:id" element={<MemberProfile />} />
+      <Route path="/userprofile" element={<UserProfile />} />
     </Routes>
   );
 }

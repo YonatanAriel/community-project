@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from './button';
 
 function LinkedInLoginButton() {
   const [loginMessage, setLoginMessage] = useState('');
+  const popupRef = useRef(null);
+  const navigate = useNavigate();
 
   // האזנה להודעות מהפופאפ
   useEffect(() => {
@@ -11,9 +14,19 @@ function LinkedInLoginButton() {
 
       if (event.data.type === 'LINKEDIN_LOGIN_SUCCESS') {
         const code = event.data.code;
-        setLoginMessage(`התחברת בהצלחה!\n\nקוד מLinkedIn: ${code}`);
-        alert(`התחברת!\n\nקוד: ${code}`);
+        
+        // סגירת הפופאפ
+        if (popupRef.current && !popupRef.current.closed) {
+          popupRef.current.close();
+        }
+        
+        setLoginMessage(`התחברת בהצלחה!`);
         console.log('LinkedIn Code:', code);
+        
+        // ניווט לדף userprofile
+        setTimeout(() => {
+          navigate('/userprofile');
+        }, 1000); // המתן שנייה להצגת הודעת הצלחה
       } else if (event.data.type === 'LINKEDIN_LOGIN_ERROR') {
         setLoginMessage('שגיאה בהתחברות');
         console.error('LinkedIn Error:', event.data.error);
@@ -26,7 +39,7 @@ function LinkedInLoginButton() {
 
   const handleLinkedInLogin = () => {
     const CLIENT_ID = import.meta.env.VITE_LINKEDIN_CLIENT_ID;
-    const REDIRECT_URI = `${window.location.origin}/linkedin`;
+    const REDIRECT_URI = `${window.location.origin}/login`;
     const SCOPE = 'openid profile email';
     const STATE = 'secure-random-state-123';
     
@@ -45,6 +58,8 @@ function LinkedInLoginButton() {
       'LinkedInLogin', 
       'width=500,height=600,scrollbars=yes,resizable=yes'
     );
+    
+    popupRef.current = popup;
     
     if (!popup) {
       alert('פופאפ נחסם על ידי הדפדפן. אנא אפשר פופאפים לאתר זה.');
