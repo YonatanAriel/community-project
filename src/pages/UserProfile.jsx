@@ -139,7 +139,7 @@ function UserProfile() {
               </button>
               <button
                 onClick={handleSave}
-                className="px-4 py-2 text-sm text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700"
+                className="px-4 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 Save Changes
               </button>
@@ -147,7 +147,7 @@ function UserProfile() {
           ) : (
             <button
               onClick={handleEdit}
-              className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700"
+              className="flex items-center gap-2 px-4 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
             >
               <svg
                 width="16"
@@ -196,7 +196,7 @@ function UserProfile() {
                     addItem('skills', input.value);
                     input.value = '';
                   }}
-                  className="px-3 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   Add
                 </button>
@@ -244,7 +244,7 @@ function UserProfile() {
                     addItem('interests', input.value);
                     input.value = '';
                   }}
-                  className="px-3 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   Add
                 </button>
@@ -292,7 +292,7 @@ function UserProfile() {
                     addItem('job_titles', input.value);
                     input.value = '';
                   }}
-                  className="px-3 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   Add
                 </button>
@@ -340,7 +340,7 @@ function UserProfile() {
                     addItem('industries', input.value);
                     input.value = '';
                   }}
-                  className="px-3 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
                 >
                   Add
                 </button>
