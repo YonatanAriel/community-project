@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './button';
+import { authenticateWithLinkedIn } from '@/services/apiCalls';
 
 function LinkedInLoginButton() {
   const [loginMessage, setLoginMessage] = useState('');
@@ -13,20 +14,31 @@ function LinkedInLoginButton() {
       if (event.origin !== window.location.origin) return;
 
       if (event.data.type === 'LINKEDIN_LOGIN_SUCCESS') {
-        const code = event.data.code;
+        const code = localStorage.getItem('linkedInCode');
         
         // סגירת הפופאפ
         if (popupRef.current && !popupRef.current.closed) {
           popupRef.current.close();
         }
         
-        setLoginMessage(`התחברת בהצלחה!`);
-        console.log('LinkedIn Code:', code);
-        
-        // ניווט לדף userprofile
-        setTimeout(() => {
-          navigate('/userprofile');
-        }, 1000); // המתן שנייה להצגת הודעת הצלחה
+        // שליחת הקוד לשרת
+        if (code) {
+          authenticateWithLinkedIn(code)
+            .then((response) => {
+              setLoginMessage('התחברת בהצלחה!');
+              
+              // ניווט לדף userprofile
+              setTimeout(() => {
+                navigate('/userprofile');
+              }, 1000);
+            })
+            .catch((error) => {
+              setLoginMessage('שגיאה בהתחברות לשרת');
+              console.error('LinkedIn authentication error:', error);
+            });
+        } else {
+          setLoginMessage('שגיאה: קוד LinkedIn לא נמצא');
+        }
       } else if (event.data.type === 'LINKEDIN_LOGIN_ERROR') {
         setLoginMessage('שגיאה בהתחברות');
         console.error('LinkedIn Error:', event.data.error);
@@ -38,6 +50,8 @@ function LinkedInLoginButton() {
   }, []);
 
   const handleLinkedInLogin = () => {
+    localStorage.removeItem('linkedInCode');
+    
     const CLIENT_ID = import.meta.env.VITE_LINKEDIN_CLIENT_ID;
     const REDIRECT_URI = `${window.location.origin}/login`;
     const SCOPE = 'openid profile email';
@@ -49,8 +63,6 @@ function LinkedInLoginButton() {
     }
     
     const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&state=${STATE}`;
-    
-    console.log('LinkedIn URL:', linkedinAuthUrl);
     
     // פתיחת פופאפ
     const popup = window.open(

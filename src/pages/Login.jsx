@@ -10,6 +10,9 @@ function Login() {
     const state = searchParams.get('state');
 
     if (code) {
+      // שמירת הקוד ב-localStorage
+      localStorage.setItem('linkedInCode', code);
+      
       // שליחת הקוד לחלון הראשי (במקרה של פופאפ)
       if (window.opener && !window.opener.closed) {
         window.opener.postMessage(
@@ -19,7 +22,6 @@ function Login() {
         window.close();
       } else {
         // במקרה של redirect רגיל
-        console.log('LinkedIn Code:', code);
         // כאן יבוא הקוד לשליחת הקוד לשרת
       }
     } else {

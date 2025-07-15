@@ -1,6 +1,15 @@
 import api from './handleApiCalls';
 import { API } from '@/constants/api';
 
+export const authenticateWithLinkedIn = async (code) => {
+  try {
+    return await api.post('/auth/linkedin', { code });
+  } catch (error) {
+    console.error('Error authenticating with LinkedIn:', error);
+    throw error;
+  }
+};
+
 export const getConnectionRequests = async () => {
   try {
     return await api.get(API.ENDPOINTS.CONNECTION_REQUESTS);
