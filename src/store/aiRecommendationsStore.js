@@ -9,7 +9,9 @@ export const useAiRecommendationsStore = create((set, get) => ({
 
   setInputText: (text) => set({ inputText: text }),
 
-  setRecommendations: (recommendations) => set({ recommendations }),
+  setRecommendations: (recommendations) => {
+    set({ recommendations });
+  },
 
   setLoading: (isLoading) => set({ isLoading }),
 
