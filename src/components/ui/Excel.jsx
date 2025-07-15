@@ -60,9 +60,9 @@ function Excel() {
   // Render upload popup
   const renderUploadPopup = () => (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+      <div className="w-full max-w-md mx-4 overflow-hidden bg-white shadow-2xl rounded-xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+        <div className="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-white">
               Upload Excel File
@@ -81,10 +81,10 @@ function Excel() {
         {/* Body */}
         <div className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block mb-3 text-sm font-medium text-gray-700">
               Select Excel or CSV file
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+            <div className="p-6 text-center transition-colors border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400">
               <div className="space-y-2">
                 <Upload size={32} className="mx-auto text-gray-400" />
                 <input
@@ -102,9 +102,9 @@ function Excel() {
 
           {/* Selected File */}
           {selectedFile && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <div className="p-3 border border-blue-200 rounded-lg bg-blue-50">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                <div className="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-lg">
                   <Upload size={16} className="text-blue-600" />
                 </div>
                 <div>
@@ -121,7 +121,7 @@ function Excel() {
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+            <div className="p-3 border border-red-200 rounded-lg bg-red-50">
               <div className="flex items-center gap-2 text-red-700">
                 <AlertCircle size={16} />
                 <span className="text-sm font-medium">{error}</span>
@@ -131,7 +131,7 @@ function Excel() {
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50 px-6 py-4 flex gap-3 justify-end">
+        <div className="flex justify-end gap-3 px-6 py-4 bg-gray-50">
           <Button
             variant="outline"
             onClick={() => setIsPopupOpen(false)}
@@ -144,7 +144,7 @@ function Excel() {
             disabled={!selectedFile || isUploading}
             className="bg-blue-600 hover:bg-blue-700"
           >
-            {isUploading && <Loader2 size={16} className="animate-spin mr-2" />}
+            {isUploading && <Loader2 size={16} className="mr-2 animate-spin" />}
             {isUploading ? 'Uploading...' : 'Upload File'}
           </Button>
         </div>
@@ -157,7 +157,7 @@ function Excel() {
     <>
       <Button
         onClick={() => setIsPopupOpen(true)}
-        className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+        className="text-white bg-blue-600 shadow-lg hover:bg-blue-700"
       >
         <Upload size={16} className="mr-2" />
         Upload Excel File
