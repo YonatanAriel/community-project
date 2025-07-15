@@ -17,7 +17,13 @@ export const useAiRecommendations = () => {
 
       try {
         const response = await getAiRecommendations(inputText);
-        const recommendations = response.data || [];
+        console.log('API Response:', response);
+        console.log('Response data:', response.data);
+        console.log('Response recommendations:', response.recommendations);
+
+        const recommendations =
+          response.data || response.recommendations || response || [];
+        console.log('Final recommendations:', recommendations);
 
         const enrichedRecommendations = recommendations.map((member) => ({
           ...member,
@@ -25,6 +31,7 @@ export const useAiRecommendations = () => {
           matchReason: member.matchReason || generateMatchReason(member),
         }));
 
+        console.log('Enriched recommendations:', enrichedRecommendations);
         store.setRecommendations(enrichedRecommendations);
         store.setLastQuery(inputText);
       } catch (err) {
