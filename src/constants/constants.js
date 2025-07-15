@@ -4,7 +4,7 @@ export const SIDEBAR_LINKS = {
   DASHBOARD: '/dashboard',
   AI_MATCHING: '/ai-matching',
   CONNECTIONS_REQUESTS: '/connections-requests',
-  USER_PROFILE: '/profile',
+  USER_PROFILE: '/userprofile',
 };
 
 export const SIDEBAR_LABELS = {
