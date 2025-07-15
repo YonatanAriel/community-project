@@ -1,16 +1,16 @@
-import { Users, Clock, History } from 'lucide-react';
+import { Users, Clock } from 'lucide-react';
 import TabNavigation from '@/components/ui/TabNavigation';
 import TabContent from '@/components/ui/TabContent';
 
 function ConnectionsTab({
   pendingRequests = [],
   connections = [],
-  allRequests = [],
   activeTab,
   onTabChange,
   onAcceptRequest,
   onRejectRequest,
   onRemoveConnection,
+  isLoading = false,
 }) {
   const tabs = [
     {
@@ -24,12 +24,6 @@ function ConnectionsTab({
       label: 'Connections',
       icon: Users,
       count: connections.length,
-    },
-    {
-      id: 'history',
-      label: 'History',
-      icon: History,
-      count: allRequests.length,
     },
   ];
 
@@ -45,10 +39,10 @@ function ConnectionsTab({
         activeTab={activeTab}
         pendingRequests={pendingRequests}
         connections={connections}
-        allRequests={allRequests}
         onAcceptRequest={onAcceptRequest}
         onRejectRequest={onRejectRequest}
         onRemoveConnection={onRemoveConnection}
+        isLoading={isLoading}
       />
     </div>
   );

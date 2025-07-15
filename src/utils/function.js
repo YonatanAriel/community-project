@@ -1,5 +1,12 @@
 export const formatTimeAgo = (dateString) => {
+  if (!dateString) return 'Unknown time';
+
   const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return 'Invalid date';
+  }
+
   const now = new Date();
   const diffInMs = now - date;
   const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
@@ -17,6 +24,7 @@ export const formatTimeAgo = (dateString) => {
 };
 
 export const truncateText = (text, maxLength = 100) => {
+  if (!text || typeof text !== 'string') return '';
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
 };

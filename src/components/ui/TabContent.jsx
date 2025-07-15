@@ -1,17 +1,24 @@
 import ConnectionRequestsList from '@/components/ui/ConnectionRequestsList';
 import ConnectionsList from '@/components/ui/ConnectionsList';
-import ConnectionsHistory from '@/components/ui/ConnectionsHistory';
 
 function TabContent({
   activeTab,
-  pendingRequests,
-  connections,
-  allRequests,
+  pendingRequests = [],
+  connections = [],
   onAcceptRequest,
   onRejectRequest,
   onRemoveConnection,
+  isLoading = false,
 }) {
   const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="flex items-center justify-center p-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      );
+    }
+
     switch (activeTab) {
       case 'requests':
         return (
@@ -38,8 +45,6 @@ function TabContent({
             />
           </div>
         );
-      case 'history':
-        return <ConnectionsHistory requests={allRequests} />;
       default:
         return null;
     }
