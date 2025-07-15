@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useConnectionsStore } from '@/store/connectionsStore';
 import ConnectionsTab from '@/components/ui/ConnectionsTab';
 import PageHeader from '@/components/ui/PageHeader';
@@ -11,28 +11,56 @@ function ConnectionsRequests() {
     removeConnection,
     getPendingRequests,
     getActiveConnections,
-    getAllRequests,
+    fetchConnectionRequests,
+    fetchConnections,
+    isLoading,
+    error,
+    clearError,
   } = useConnectionsStore();
 
-  const pendingRequests = getPendingRequests();
-  const activeConnections = getActiveConnections();
-  const allRequests = getAllRequests();
+  const pendingRequests = getPendingRequests() || [];
+  const activeConnections = getActiveConnections() || [];
 
-  const handleAcceptRequest = (requestId) => {
-    acceptRequest(requestId);
+  useEffect(() => {
+    fetchConnectionRequests();
+    fetchConnections();
+  }, [fetchConnectionRequests, fetchConnections]);
+
+  const handleAcceptRequest = async (requestId) => {
+    try {
+      await acceptRequest(requestId);
+    } catch (error) {
+      console.error('Failed to accept request:', error);
+    }
   };
 
-  const handleRejectRequest = (requestId) => {
-    rejectRequest(requestId);
+  const handleRejectRequest = async (requestId) => {
+    try {
+      await rejectRequest(requestId);
+    } catch (error) {
+      console.error('Failed to reject request:', error);
+    }
   };
 
-  const handleRemoveConnection = (connectionId) => {
-    removeConnection(connectionId);
+  const handleRemoveConnection = async (connectionId) => {
+    try {
+      await removeConnection(connectionId);
+    } catch (error) {
+      console.error('Failed to remove connection:', error);
+    }
   };
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
   };
+
+  useEffect(() => {
+    return () => {
+      if (error) {
+        clearError();
+      }
+    };
+  }, [error, clearError]);
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -41,20 +69,24 @@ function ConnectionsRequests() {
           title="Connections"
           description="Manage your connection requests and existing connections"
         />
+        {error && (
+          <div className="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
+            {error}
+          </div>
+        )}
         <ConnectionsTab
           pendingRequests={pendingRequests}
           connections={activeConnections}
-          allRequests={allRequests}
           activeTab={activeTab}
           onTabChange={handleTabChange}
           onAcceptRequest={handleAcceptRequest}
           onRejectRequest={handleRejectRequest}
           onRemoveConnection={handleRemoveConnection}
+          isLoading={isLoading}
         />
       </div>
     </div>
   );
 }
-// //
 
 export default ConnectionsRequests;
