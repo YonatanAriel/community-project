@@ -1,10 +1,11 @@
 import Home from '@/pages/Home';
 import AdminDashboard from '@/components/layout/AdminDashboard';
 import AiMatching from '@/pages/AiMatching';
-import Profile from '@/pages/Profile';
 import MemberProfile from '@/pages/MemberProfile';
 import ConnectionsRequests from '@/pages/ConnectionsRequests';
+import UserProfile from '@/pages/UserProfile'; // Add this import
 import { Routes, Route } from 'react-router-dom';
+import Excel from '@/components/ui/Excel';
 
 function AppRoutes() {
   return (
@@ -13,8 +14,9 @@ function AppRoutes() {
       <Route path="/dashboard" element={<AdminDashboard />} />
       <Route path="/ai-matching" element={<AiMatching />} />
       <Route path="/connections-requests" element={<ConnectionsRequests />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/userprofile" element={<UserProfile />} />
       <Route path="/member/:id" element={<MemberProfile />} />
+      <Route path="/excel" element={<Excel />} />
     </Routes>
   );
 }
