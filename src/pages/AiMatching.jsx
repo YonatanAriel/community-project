@@ -1,10 +1,12 @@
+import { useState, useEffect } from 'react';
 import { useAiRecommendations } from '@/hooks/useAiRecommendations';
 import PageHeader from '@/components/ui/PageHeader';
 import AiMatchingForm from '@/components/ui/AiMatchingForm';
-import AiMatchingResults from '@/components/ui/AiMatchingResults';
-import AiMatchingLoadingState from '@/components/ui/AiMatchingLoadingState';
+import AiMatchingPopup from '@/components/ui/popups/AiMatchingPopup';
 
 function AiMatching() {
+  const [showPopup, setShowPopup] = useState(false);
+  const [searchCount, setSearchCount] = useState(0);
   const {
     inputText,
     recommendations,
@@ -12,18 +14,37 @@ function AiMatching() {
     error,
     setInputText,
     searchRecommendations,
+    clearSearch,
   } = useAiRecommendations();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSearchCount((prev) => prev + 1);
     await searchRecommendations(inputText);
   };
 
+  useEffect(() => {
+    setShowPopup(false);
+
+    return () => {
+      clearSearch();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (recommendations.length > 0 && !isLoading && searchCount > 0) {
+      setShowPopup(true);
+    }
+  }, [recommendations, isLoading, searchCount]);
   const examples = [
     'I want to start a startup in the United States that deals with electrical products and fintech',
     'Looking for technology partners to develop an AI application for the healthcare sector',
     'I am interested in creating a professional network in the field of sustainability and renewable energy',
   ];
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   const handleExampleClick = (example) => {
     setInputText(example);
@@ -47,14 +68,14 @@ function AiMatching() {
             examples={examples}
             handleExampleClick={handleExampleClick}
           />
-
-          {recommendations.length > 0 && (
-            <AiMatchingResults recommendations={recommendations} />
-          )}
-
-          {isLoading && <AiMatchingLoadingState />}
         </div>
       </div>
+
+      <AiMatchingPopup
+        recommendations={recommendations}
+        isOpen={showPopup}
+        onClose={handleClosePopup}
+      />
     </div>
   );
 }
