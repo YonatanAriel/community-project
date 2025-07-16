@@ -4,6 +4,7 @@ import { Calendar, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import EventsTab from '@/components/ui/EventsTab';
 import NewEventForm from '@/components/ui/popups/NewEventForm';
+import EventRegistrationForm from '@/components/ui/popups/EventRegistrationForm';
 
 function Events() {
   const navigate = useNavigate();
@@ -12,6 +13,9 @@ function Events() {
   const [isEditEventFormOpen, setIsEditEventFormOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRegistrationFormOpen, setIsRegistrationFormOpen] = useState(false);
+  const [selectedEventForRegistration, setSelectedEventForRegistration] = useState(null);
+  const [registrations, setRegistrations] = useState([]);
   
   // State for events - prepared for future API integration
   const [myEvents, setMyEvents] = useState([
@@ -164,7 +168,33 @@ function Events() {
 
   const handleJoinEvent = (eventId) => {
     console.log('Join event:', eventId);
-    // TODO: Implement join event functionality
+    const eventToJoin = myEvents.find(event => event.id === eventId);
+    if (eventToJoin) {
+      setSelectedEventForRegistration(eventToJoin);
+      setIsRegistrationFormOpen(true);
+    }
+  };
+
+  const handleCloseRegistrationForm = () => {
+    setIsRegistrationFormOpen(false);
+    setSelectedEventForRegistration(null);
+  };
+
+  const handleEventRegistration = (registrationData) => {
+    console.log('Event registration:', registrationData);
+    
+    // Add to registrations list
+    setRegistrations(prev => [...prev, registrationData]);
+    
+    // TODO: Send to server
+    // const response = await registerForEvent(registrationData);
+    
+    // Close form
+    setIsRegistrationFormOpen(false);
+    setSelectedEventForRegistration(null);
+    
+    // Show success message
+    alert(`Successfully registered for "${registrationData.eventTitle}"!`);
   };
 
   return (
@@ -230,6 +260,20 @@ function Events() {
                 onSave={handleUpdateEvent}
                 onCancel={handleCloseEditEventForm}
                 isEditing={true}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Event Registration Form Modal */}
+        {isRegistrationFormOpen && selectedEventForRegistration && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/50" onClick={handleCloseRegistrationForm} />
+            <div className="relative bg-card border rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+              <EventRegistrationForm
+                event={selectedEventForRegistration}
+                onRegister={handleEventRegistration}
+                onCancel={handleCloseRegistrationForm}
               />
             </div>
           </div>
