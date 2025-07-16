@@ -104,49 +104,13 @@ function UserProfile() {
   };
 
   return (
-    <div className="container px-4 py-8 mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-3 py-2 text-sm transition-colors bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="m12 19-7-7 7-7" />
-              <path d="M19 12H5" />
-            </svg>
-            Back
-          </button>
-          <h1 className="text-3xl font-bold text-foreground">User Profile</h1>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {isEditing ? (
-            <>
-              <button
-                onClick={handleCancel}
-                className="px-4 py-2 text-sm transition-colors bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSave}
-                className="px-4 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                Save Changes
-              </button>
-            </>
-          ) : (
+    <div className="flex flex-col w-full h-full">
+      <div className="flex-1 w-full px-8 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
             <button
-              onClick={handleEdit}
-              className="flex items-center gap-2 px-4 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 px-3 py-2 text-sm transition-colors bg-white border border-gray-300 rounded-md hover:bg-gray-50"
             >
               <svg
                 width="16"
@@ -156,221 +120,259 @@ function UserProfile() {
                 stroke="currentColor"
                 strokeWidth="2"
               >
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
               </svg>
-              Edit Profile
+              Back
             </button>
-          )}
+            <h1 className="text-3xl font-bold text-foreground">User Profile</h1>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={handleCancel}
+                  className="px-4 py-2 text-sm transition-colors bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="px-4 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  Save Changes
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={handleEdit}
+                className="flex items-center gap-2 px-4 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+                Edit Profile
+              </button>
+            )}
+          </div>
         </div>
+
+        <div className="mb-4">
+          <ProfileCard member={currentUser} />
+        </div>
+
+        {isEditing ? (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {/* Skills Edit Section */}
+            <div className="p-6 border rounded-lg bg-card border-border">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
+                Edit Skills
+              </h3>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add a skill..."
+                    className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addItem('skills', e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                  <button
+                    onClick={(e) => {
+                      const input = e.target.previousElementSibling;
+                      addItem('skills', input.value);
+                      input.value = '';
+                    }}
+                    className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {editData.skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 px-2 py-1 text-sm bg-gray-100 rounded-md"
+                    >
+                      {skill}
+                      <button
+                        onClick={() => removeItem('skills', index)}
+                        className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Interests Edit Section */}
+            <div className="p-6 border rounded-lg bg-card border-border">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
+                Edit Interests
+              </h3>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add an interest..."
+                    className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addItem('interests', e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                  <button
+                    onClick={(e) => {
+                      const input = e.target.previousElementSibling;
+                      addItem('interests', input.value);
+                      input.value = '';
+                    }}
+                    className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {editData.interests.map((interest, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 px-2 py-1 text-sm bg-gray-100 rounded-md"
+                    >
+                      {interest}
+                      <button
+                        onClick={() => removeItem('interests', index)}
+                        className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Job Titles Edit Section */}
+            <div className="p-6 border rounded-lg bg-card border-border">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
+                Edit Job Titles
+              </h3>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add a job title..."
+                    className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addItem('job_titles', e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                  <button
+                    onClick={(e) => {
+                      const input = e.target.previousElementSibling;
+                      addItem('job_titles', input.value);
+                      input.value = '';
+                    }}
+                    className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {editData.job_titles.map((title, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 rounded-md bg-gray-50"
+                    >
+                      <span className="text-sm">{title}</span>
+                      <button
+                        onClick={() => removeItem('job_titles', index)}
+                        className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Industries Edit Section */}
+            <div className="p-6 border rounded-lg bg-card border-border">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
+                Edit Industries
+              </h3>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add an industry..."
+                    className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addItem('industries', e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                  <button
+                    onClick={(e) => {
+                      const input = e.target.previousElementSibling;
+                      addItem('industries', input.value);
+                      input.value = '';
+                    }}
+                    className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {editData.industries.map((industry, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center gap-1 px-2 py-1 text-sm bg-gray-100 rounded-md"
+                    >
+                      {industry}
+                      <button
+                        onClick={() => removeItem('industries', index)}
+                        className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <SkillsSection skills={currentUser.skills} />
+            <InterestsSection interests={currentUser.interests} />
+            <JobTitlesSection jobTitles={currentUser.job_titles} />
+            <IndustriesSection industries={currentUser.industries} />
+          </div>
+        )}
       </div>
-
-      <div className="mb-6">
-        <ProfileCard member={currentUser} />
-      </div>
-
-      {isEditing ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* Skills Edit Section */}
-          <div className="p-6 border rounded-lg bg-card border-border">
-            <h3 className="mb-4 text-lg font-semibold text-foreground">
-              Edit Skills
-            </h3>
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Add a skill..."
-                  className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      addItem('skills', e.target.value);
-                      e.target.value = '';
-                    }
-                  }}
-                />
-                <button
-                  onClick={(e) => {
-                    const input = e.target.previousElementSibling;
-                    addItem('skills', input.value);
-                    input.value = '';
-                  }}
-                  className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {editData.skills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 px-2 py-1 text-sm bg-gray-100 rounded-md"
-                  >
-                    {skill}
-                    <button
-                      onClick={() => removeItem('skills', index)}
-                      className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Interests Edit Section */}
-          <div className="p-6 border rounded-lg bg-card border-border">
-            <h3 className="mb-4 text-lg font-semibold text-foreground">
-              Edit Interests
-            </h3>
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Add an interest..."
-                  className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      addItem('interests', e.target.value);
-                      e.target.value = '';
-                    }
-                  }}
-                />
-                <button
-                  onClick={(e) => {
-                    const input = e.target.previousElementSibling;
-                    addItem('interests', input.value);
-                    input.value = '';
-                  }}
-                  className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {editData.interests.map((interest, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 px-2 py-1 text-sm bg-gray-100 rounded-md"
-                  >
-                    {interest}
-                    <button
-                      onClick={() => removeItem('interests', index)}
-                      className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Job Titles Edit Section */}
-          <div className="p-6 border rounded-lg bg-card border-border">
-            <h3 className="mb-4 text-lg font-semibold text-foreground">
-              Edit Job Titles
-            </h3>
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Add a job title..."
-                  className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      addItem('job_titles', e.target.value);
-                      e.target.value = '';
-                    }
-                  }}
-                />
-                <button
-                  onClick={(e) => {
-                    const input = e.target.previousElementSibling;
-                    addItem('job_titles', input.value);
-                    input.value = '';
-                  }}
-                  className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="space-y-2">
-                {editData.job_titles.map((title, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-2 rounded-md bg-gray-50"
-                  >
-                    <span className="text-sm">{title}</span>
-                    <button
-                      onClick={() => removeItem('job_titles', index)}
-                      className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Industries Edit Section */}
-          <div className="p-6 border rounded-lg bg-card border-border">
-            <h3 className="mb-4 text-lg font-semibold text-foreground">
-              Edit Industries
-            </h3>
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Add an industry..."
-                  className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      addItem('industries', e.target.value);
-                      e.target.value = '';
-                    }
-                  }}
-                />
-                <button
-                  onClick={(e) => {
-                    const input = e.target.previousElementSibling;
-                    addItem('industries', input.value);
-                    input.value = '';
-                  }}
-                  className="px-3 py-2 text-sm transition-colors rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {editData.industries.map((industry, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center gap-1 px-2 py-1 text-sm bg-gray-100 rounded-md"
-                  >
-                    {industry}
-                    <button
-                      onClick={() => removeItem('industries', index)}
-                      className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <SkillsSection skills={currentUser.skills} />
-          <InterestsSection interests={currentUser.interests} />
-          <JobTitlesSection jobTitles={currentUser.job_titles} />
-          <IndustriesSection industries={currentUser.industries} />
-        </div>
-      )}
     </div>
   );
 }
