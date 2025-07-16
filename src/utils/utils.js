@@ -1,3 +1,10 @@
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
+
 export const formatTimeAgo = (dateString) => {
   if (!dateString) return 'Unknown time';
 

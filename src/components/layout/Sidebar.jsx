@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { SIDEBAR_LABELS, NAVIGATION_ITEMS } from '@/constants/constants';
 import { useUserStore } from '@/store/userStore';
 import { User, LogOut } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/utils';
 
 function Sidebar() {
   const { user } = useUserStore();

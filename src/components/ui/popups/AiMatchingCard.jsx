@@ -1,5 +1,5 @@
 import ConnectButton from '@/components/ui/ConnectButton';
-import { truncateText } from '@/utils/function';
+import { truncateText } from '@/utils/utils';
 import AiMatchingUserInfo from './AiMatchingUserInfo';
 import AiMatchingSkills from './AiMatchingSkills';
 import AiMatchingMatchScore from './AiMatchingMatchScore';

@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
-import { formatTimeAgo, truncateText } from '@/utils/function';
+import { formatTimeAgo, truncateText } from '@/utils/utils';
 import ActionButtons from '@/components/ui/ActionButtons';
 import StatusBadge from '@/components/ui/StatusBadge';
 
