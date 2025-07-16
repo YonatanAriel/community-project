@@ -15,6 +15,12 @@ function EventsTab({
 }) {
   const tabs = [
     {
+      id: 'my-events',
+      label: 'My Events',
+      icon: User,
+      count: myEvents.length,
+    },
+    {
       id: 'upcoming',
       label: 'Upcoming Events',
       icon: Calendar,
@@ -25,12 +31,6 @@ function EventsTab({
       label: 'Finished Events',
       icon: Clock,
       count: finishedEvents.length,
-    },
-    {
-      id: 'my-events',
-      label: 'My Events',
-      icon: User,
-      count: myEvents.length,
     },
   ];
 
