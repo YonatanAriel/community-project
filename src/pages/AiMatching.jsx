@@ -3,6 +3,7 @@ import { useAiRecommendations } from '@/hooks/useAiRecommendations';
 import PageHeader from '@/components/ui/PageHeader';
 import AiMatchingForm from '@/components/ui/AiMatchingForm';
 import AiMatchingPopup from '@/components/ui/popups/AiMatchingPopup';
+import { Bot } from 'lucide-react';
 
 function AiMatching() {
   const [showPopup, setShowPopup] = useState(false);
@@ -56,6 +57,7 @@ function AiMatching() {
         <PageHeader
           title="AI Matching"
           description="Describe your goals and we'll find the right people in the community using artificial intelligence"
+          icon={Bot}
         />
 
         <div className="space-y-6">
