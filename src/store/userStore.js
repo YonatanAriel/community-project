@@ -1,9 +1,30 @@
 import { create } from 'zustand';
 
 export const useUserStore = create((set) => ({
-  user: {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+  user: null,
+  token: localStorage.getItem('token') || null,
+  isAuthenticated: false,
+  isAdmin: false,
+
+  setAuth: (token, user) => {
+    localStorage.setItem('token', token);
+    set({
+      token,
+      user,
+      isAuthenticated: true,
+      isAdmin: user?.is_admin || false,
+    });
   },
+
+  logout: () => {
+    localStorage.removeItem('token');
+    set({
+      token: null,
+      user: null,
+      isAuthenticated: false,
+      isAdmin: false,
+    });
+  },
+
   setUser: (user) => set({ user }),
 }));
