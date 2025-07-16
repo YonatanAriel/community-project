@@ -4,7 +4,7 @@ export const membersMockData = [
     user_name: 'Sarah Johnson',
     email: 'sarah.johnson@email.com',
     photo_url:
-      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+      'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face',
     skills: ['JavaScript', 'React', 'Node.js', 'MongoDB'],
     interests: ['Web Development', 'AI/ML', 'Open Source'],
     job_titles: ['Senior Frontend Developer', 'Full Stack Developer'],

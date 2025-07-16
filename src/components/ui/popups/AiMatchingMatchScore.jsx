@@ -1,5 +1,5 @@
 import { Star } from 'lucide-react';
-import { truncateText } from '@/utils/function';
+import { truncateText } from '@/utils/utils';
 
 function AiMatchingMatchScore({ member }) {
   return (
