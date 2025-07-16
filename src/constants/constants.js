@@ -1,9 +1,10 @@
-import { Home, Bot, Users, User } from 'lucide-react';
+import { Home, Bot, Users, User, Calendar } from 'lucide-react';
 
 export const SIDEBAR_LINKS = {
   DASHBOARD: '/dashboard',
   AI_MATCHING: '/ai-matching',
   CONNECTIONS_REQUESTS: '/connections-requests',
+  EVENTS: '/events',
   USER_PROFILE: '/userprofile',
 };
 
@@ -11,6 +12,7 @@ export const SIDEBAR_LABELS = {
   DASHBOARD: 'Dashboard',
   AI_MATCHING: 'AI Matching',
   CONNECTIONS_REQUESTS: 'Connections Requests',
+  EVENTS: 'Events',
   USER_PROFILE: 'User Profile',
   LOGOUT: 'Logout',
 };
@@ -30,6 +32,11 @@ export const NAVIGATION_ITEMS = [
     href: SIDEBAR_LINKS.CONNECTIONS_REQUESTS,
     icon: Users,
     label: SIDEBAR_LABELS.CONNECTIONS_REQUESTS,
+  },
+  {
+    href: SIDEBAR_LINKS.EVENTS,
+    icon: Calendar,
+    label: SIDEBAR_LABELS.EVENTS,
   },
   {
     href: SIDEBAR_LINKS.USER_PROFILE,

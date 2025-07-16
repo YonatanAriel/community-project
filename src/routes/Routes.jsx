@@ -7,6 +7,8 @@ import UserProfile from '@/pages/UserProfile'; // Add this import
 import { Routes, Route } from 'react-router-dom';
 import Login from '@/pages/Login';
 import Excel from '@/components/ui/Excel';
+import Events from '@/pages/Events';
+
 
 function AppRoutes() {
   return (
@@ -19,6 +21,7 @@ function AppRoutes() {
       <Route path="/userprofile" element={<UserProfile />} />
       <Route path="/member/:id" element={<MemberProfile />} />
       <Route path="/excel" element={<Excel />} />
+      <Route path="/events" element={<Events />} />
     </Routes>
   );
 }
