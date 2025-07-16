@@ -7,13 +7,19 @@ import UserProfile from '@/pages/UserProfile';
 import Login from '@/pages/Login';
 import { Routes, Route } from 'react-router-dom';
 import Excel from '@/components/ui/Excel';
+
 import LinkedinLogin from '@/pages/LinkedinLogin';
 import ProtectedRoute from '@/components/ui/ProtectedRoute';
+
+import Events from '@/pages/Events';
+
+
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+
       <Route path="/linkedin-login" element={<LinkedinLogin />} />
       <Route
         path="/"
@@ -71,6 +77,9 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+//       <Route path="/events" element={<Events />} />
+
     </Routes>
   );
 }

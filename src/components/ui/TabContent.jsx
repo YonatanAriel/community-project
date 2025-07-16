@@ -1,25 +1,78 @@
 import ConnectionRequestsList from '@/components/ui/ConnectionRequestsList';
 import ConnectionsList from '@/components/ui/ConnectionsList';
+import EventsList from '@/components/ui/EventsList';
 
 function TabContent({
   activeTab,
   pendingRequests = [],
   connections = [],
+  myEvents = [],
+  upcomingEvents = [],
+  finishedEvents = [],
   onAcceptRequest,
   onRejectRequest,
   onRemoveConnection,
+  onViewEvent,
+  onEditEvent,
+  onDeleteEvent,
   isLoading = false,
+  onJoinEvent,
 }) {
   const renderContent = () => {
     if (isLoading) {
       return (
         <div className="flex items-center justify-center p-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className="w-8 h-8 border-b-2 rounded-full animate-spin border-primary"></div>
         </div>
       );
     }
 
     switch (activeTab) {
+      case 'my-events':
+        return (
+          <div>
+            <h3 className="mb-4 text-lg font-semibold text-foreground">
+              My Events
+            </h3>
+            <EventsList
+              events={myEvents}
+              onView={onViewEvent}
+              onEdit={onEditEvent}
+              onDelete={onDeleteEvent}
+              onJoinEvent={onJoinEvent}
+            />
+          </div>
+        );
+      case 'upcoming':
+        return (
+          <div>
+            <h3 className="mb-4 text-lg font-semibold text-foreground">
+              Upcoming Events
+            </h3>
+            <EventsList
+              events={upcomingEvents}
+              onView={onViewEvent}
+              onEdit={onEditEvent}
+              onDelete={onDeleteEvent}
+              onJoinEvent={onJoinEvent}
+            />
+          </div>
+        );
+      case 'finished':
+        return (
+          <div>
+            <h3 className="mb-4 text-lg font-semibold text-foreground">
+              Finished Events
+            </h3>
+            <EventsList
+              events={finishedEvents}
+              onView={onViewEvent}
+              onEdit={onEditEvent}
+              onDelete={onDeleteEvent}
+              onJoinEvent={onJoinEvent}
+            />
+          </div>
+        );
       case 'requests':
         return (
           <div>
