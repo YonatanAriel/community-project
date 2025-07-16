@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { SIDEBAR_LABELS, NAVIGATION_ITEMS } from '@/constants/constants';
 import { useUserStore } from '@/store/userStore';
@@ -6,8 +6,31 @@ import { User, LogOut } from 'lucide-react';
 import { cn } from '@/utils/utils';
 
 function Sidebar() {
-  const { user } = useUserStore();
+  const { user, logout } = useUserStore();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  let visibleNavigationItems = NAVIGATION_ITEMS.filter((item) => {
+    if (item.href === '/dashboard') {
+      return user?.is_admin;
+    }
+    return true;
+  });
+
+  if (!user?.is_admin) {
+    const profileItem = visibleNavigationItems.find(
+      (item) => item.href === '/userprofile'
+    );
+    visibleNavigationItems = [
+      profileItem,
+      ...visibleNavigationItems.filter((item) => item.href !== '/userprofile'),
+    ];
+  }
 
   return (
     <div className="flex flex-col w-64 h-screen border-r bg-background border-border">
@@ -18,7 +41,7 @@ function Sidebar() {
       </div>
 
       <nav className="flex-1 px-4 space-y-2">
-        {NAVIGATION_ITEMS.map((item) => {
+        {visibleNavigationItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.href;
 
@@ -55,10 +78,10 @@ function Sidebar() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-sm font-medium truncate text-foreground">
-              {user.name}
+              {user?.full_name || user?.name || 'User'}
             </div>
             <div className="text-xs truncate text-muted-foreground">
-              {user.email}
+              {user?.email || 'user@example.com'}
             </div>
           </div>
         </div>
@@ -67,9 +90,7 @@ function Sidebar() {
           variant="ghost"
           size="sm"
           className="justify-start w-full gap-2 text-muted-foreground hover:text-foreground"
-          onClick={() => {
-            console.log('Logout clicked');
-          }}
+          onClick={handleLogout}
         >
           <LogOut size={16} />
           {SIDEBAR_LABELS.LOGOUT}
