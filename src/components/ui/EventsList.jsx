@@ -1,7 +1,7 @@
 import { Calendar, Clock, MapPin, Users, Eye, Edit2, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-function EventsList({ events = [], onView, onEdit, onDelete, showActions = false }) {
+function EventsList({ events = [], onView, onEdit, onDelete }) {
   if (events.length === 0) {
     return (
       <div className="p-8 text-center text-muted-foreground">
@@ -17,7 +17,7 @@ function EventsList({ events = [], onView, onEdit, onDelete, showActions = false
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
       {events.map((event) => (
         <div
           key={event.id}
@@ -67,28 +67,24 @@ function EventsList({ events = [], onView, onEdit, onDelete, showActions = false
                 View
               </Button>
               
-              {showActions && (
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onEdit?.(event.id)}
-                    className="flex items-center gap-1"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onDelete?.(event.id)}
-                    className="flex items-center gap-1 text-red-600 hover:text-red-700"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    Delete
-                  </Button>
-                </>
-              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onEdit?.(event.id)}
+                className="flex items-center gap-1"
+              >
+                <Edit2 className="w-4 h-4" />
+                Edit
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onDelete?.(event.id)}
+                className="flex items-center gap-1 text-red-600 hover:text-red-700"
+              >
+                <Trash2 className="w-4 h-4" />
+                Delete
+              </Button>
             </div>
           </div>
         </div>
