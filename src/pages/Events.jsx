@@ -162,6 +162,11 @@ function Events() {
     }
   };
 
+  const handleJoinEvent = (eventId) => {
+    console.log('Join event:', eventId);
+    // TODO: Implement join event functionality
+  };
+
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="container flex flex-col flex-1 px-4 py-8 mx-auto">
@@ -188,6 +193,7 @@ function Events() {
             onEditEvent={handleEditEvent}
             onDeleteEvent={handleDeleteEvent}
             isLoading={isLoading}
+            onJoinEvent={handleJoinEvent}
           />
         </div>
 

@@ -16,6 +16,7 @@ function TabContent({
   onEditEvent,
   onDeleteEvent,
   isLoading = false,
+  onJoinEvent,
 }) {
   const renderContent = () => {
     if (isLoading) {
@@ -38,6 +39,7 @@ function TabContent({
               onView={onViewEvent}
               onEdit={onEditEvent}
               onDelete={onDeleteEvent}
+              onJoinEvent={onJoinEvent}
             />
           </div>
         );
@@ -52,6 +54,7 @@ function TabContent({
               onView={onViewEvent}
               onEdit={onEditEvent}
               onDelete={onDeleteEvent}
+              onJoinEvent={onJoinEvent}
             />
           </div>
         );
@@ -66,6 +69,7 @@ function TabContent({
               onView={onViewEvent}
               onEdit={onEditEvent}
               onDelete={onDeleteEvent}
+              onJoinEvent={onJoinEvent}
             />
           </div>
         );
