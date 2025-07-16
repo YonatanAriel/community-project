@@ -48,41 +48,50 @@ export const useConnectionsStore = create((set, get) => ({
     }
   },
 
+  extractUserIdsFromRequests: (requests) => {
+    const userIds = new Set();
+    requests.forEach((request) => {
+      if (request.from_user_id) userIds.add(request.from_user_id);
+      if (request.to_user_id) userIds.add(request.to_user_id);
+    });
+    return Array.from(userIds);
+  },
+
+  transformRequestsWithUserData: (requests) => {
+    return requests.map((request) => ({
+      ...request,
+      from_user:
+        request.from_user ||
+        get().getUserData(request.from_user_id, request.from_user_name),
+      to_user:
+        request.to_user ||
+        get().getUserData(request.to_user_id, request.to_user_name),
+    }));
+  },
+
+  processConnectionRequestsData: async (requestsData) => {
+    if (!Array.isArray(requestsData)) {
+      return [];
+    }
+
+    const userIds = get().extractUserIdsFromRequests(requestsData);
+    await get().fetchUserData(userIds);
+    return get().transformRequestsWithUserData(requestsData);
+  },
+
   fetchConnectionRequests: async () => {
     set({ isLoading: true, error: null });
     try {
       const response = await getConnectionRequests();
       const requestsData = response.data?.data || response.data || [];
 
-      if (Array.isArray(requestsData)) {
-        const userIds = new Set();
-        requestsData.forEach((request) => {
-          if (request.from_user_id) userIds.add(request.from_user_id);
-          if (request.to_user_id) userIds.add(request.to_user_id);
-        });
+      const transformedRequests =
+        await get().processConnectionRequestsData(requestsData);
 
-        await get().fetchUserData(Array.from(userIds));
-
-        const transformedRequests = requestsData.map((request) => ({
-          ...request,
-          from_user:
-            request.from_user ||
-            get().getUserData(request.from_user_id, request.from_user_name),
-          to_user:
-            request.to_user ||
-            get().getUserData(request.to_user_id, request.to_user_name),
-        }));
-
-        set({
-          connectionRequests: transformedRequests,
-          isLoading: false,
-        });
-      } else {
-        set({
-          connectionRequests: [],
-          isLoading: false,
-        });
-      }
+      set({
+        connectionRequests: transformedRequests,
+        isLoading: false,
+      });
     } catch (error) {
       set({
         connectionRequests: [],
@@ -92,41 +101,49 @@ export const useConnectionsStore = create((set, get) => ({
     }
   },
 
+  extractUserIdsFromConnections: (connections) => {
+    const userIds = new Set();
+    connections.forEach((connection) => {
+      if (connection.from_user_id) userIds.add(connection.from_user_id);
+      if (connection.to_user_id) userIds.add(connection.to_user_id);
+    });
+    return Array.from(userIds);
+  },
+
+  transformConnectionsWithUserData: (connections) => {
+    return connections.map((connection) => ({
+      ...connection,
+      user: connection.user || get().getUserData(connection.from_user_id),
+      from_user:
+        connection.from_user || get().getUserData(connection.from_user_id),
+      to_user: connection.to_user || get().getUserData(connection.to_user_id),
+      connected_at: connection.responded_at || connection.requested_at,
+    }));
+  },
+
+  processConnectionsData: async (connectionsData) => {
+    if (!Array.isArray(connectionsData)) {
+      return [];
+    }
+
+    const userIds = get().extractUserIdsFromConnections(connectionsData);
+    await get().fetchUserData(userIds);
+    return get().transformConnectionsWithUserData(connectionsData);
+  },
+
   fetchConnections: async () => {
     set({ isLoading: true, error: null });
     try {
       const response = await getConnections();
       const connectionsData = response.data?.data || response.data || [];
 
-      if (Array.isArray(connectionsData)) {
-        const userIds = new Set();
-        connectionsData.forEach((connection) => {
-          if (connection.from_user_id) userIds.add(connection.from_user_id);
-          if (connection.to_user_id) userIds.add(connection.to_user_id);
-        });
+      const transformedConnections =
+        await get().processConnectionsData(connectionsData);
 
-        await get().fetchUserData(Array.from(userIds));
-
-        const transformedConnections = connectionsData.map((connection) => ({
-          ...connection,
-          user: connection.user || get().getUserData(connection.from_user_id),
-          from_user:
-            connection.from_user || get().getUserData(connection.from_user_id),
-          to_user:
-            connection.to_user || get().getUserData(connection.to_user_id),
-          connected_at: connection.responded_at || connection.requested_at,
-        }));
-
-        set({
-          connections: transformedConnections,
-          isLoading: false,
-        });
-      } else {
-        set({
-          connections: [],
-          isLoading: false,
-        });
-      }
+      set({
+        connections: transformedConnections,
+        isLoading: false,
+      });
     } catch (error) {
       set({
         connections: [],
@@ -136,15 +153,22 @@ export const useConnectionsStore = create((set, get) => ({
     }
   },
 
+  refreshDataAfterAccept: async () => {
+    const { fetchConnectionRequests, fetchConnections } =
+      useConnectionsStore.getState();
+    await Promise.all([fetchConnectionRequests(), fetchConnections()]);
+  },
+
+  handleAcceptRequestAPI: async (requestId) => {
+    const response = await acceptConnectionRequest(requestId);
+    await get().refreshDataAfterAccept();
+    return response;
+  },
+
   acceptRequest: async (requestId) => {
     set({ isLoading: true, error: null });
     try {
-      const response = await acceptConnectionRequest(requestId);
-
-      const { fetchConnectionRequests, fetchConnections } =
-        useConnectionsStore.getState();
-      await Promise.all([fetchConnectionRequests(), fetchConnections()]);
-
+      const response = await get().handleAcceptRequestAPI(requestId);
       set({ isLoading: false });
       return response;
     } catch (error) {
