@@ -35,23 +35,27 @@ function EventsTab({
   ];
 
   return (
-    <div className="w-full space-y-6">
-      <TabNavigation
-        tabs={tabs}
-        activeTab={activeTab}
-        onTabChange={onTabChange}
-      />
+    <div className="w-full h-full flex flex-col space-y-6">
+      <div className="flex-shrink-0">
+        <TabNavigation
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={onTabChange}
+        />
+      </div>
 
-      <TabContent
-        activeTab={activeTab}
-        upcomingEvents={upcomingEvents}
-        finishedEvents={finishedEvents}
-        myEvents={myEvents}
-        onViewEvent={onViewEvent}
-        onEditEvent={onEditEvent}
-        onDeleteEvent={onDeleteEvent}
-        isLoading={isLoading}
-      />
+      <div className="flex-1 min-h-0">
+        <TabContent
+          activeTab={activeTab}
+          upcomingEvents={upcomingEvents}
+          finishedEvents={finishedEvents}
+          myEvents={myEvents}
+          onViewEvent={onViewEvent}
+          onEditEvent={onEditEvent}
+          onDeleteEvent={onDeleteEvent}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   );
 }
