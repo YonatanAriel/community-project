@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { UserMinus, Mail, Calendar } from 'lucide-react';
-import { formatTimeAgo } from '@/utils/function';
+import { formatTimeAgo } from '@/utils/utils';
 
 function ConnectionCard({ connection, onRemove }) {
   if (!connection) {
