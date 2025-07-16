@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import ProfileHeader from '@/components/ui/ProfileHeader';
 import ProfileCard from '@/components/ui/ProfileCard';
 import SkillsSection from '@/components/ui/SkillsSection';
 import InterestsSection from '@/components/ui/InterestsSection';
@@ -110,7 +109,7 @@ function UserProfile() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-3 py-2 text-sm transition-colors border border-gray-300 rounded-md hover:bg-gray-50"
+            className="flex items-center gap-2 px-3 py-2 text-sm transition-colors bg-white border border-gray-300 rounded-md hover:bg-gray-50"
           >
             <svg
               width="16"
@@ -133,7 +132,7 @@ function UserProfile() {
             <>
               <button
                 onClick={handleCancel}
-                className="px-4 py-2 text-sm transition-colors border border-gray-300 rounded-md hover:bg-gray-50"
+                className="px-4 py-2 text-sm transition-colors bg-white border border-gray-300 rounded-md hover:bg-gray-50"
               >
                 Cancel
               </button>
@@ -182,7 +181,7 @@ function UserProfile() {
                 <input
                   type="text"
                   placeholder="Add a skill..."
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       addItem('skills', e.target.value);
@@ -210,7 +209,7 @@ function UserProfile() {
                     {skill}
                     <button
                       onClick={() => removeItem('skills', index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
                     >
                       ×
                     </button>
@@ -230,7 +229,7 @@ function UserProfile() {
                 <input
                   type="text"
                   placeholder="Add an interest..."
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       addItem('interests', e.target.value);
@@ -258,7 +257,7 @@ function UserProfile() {
                     {interest}
                     <button
                       onClick={() => removeItem('interests', index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
                     >
                       ×
                     </button>
@@ -278,7 +277,7 @@ function UserProfile() {
                 <input
                   type="text"
                   placeholder="Add a job title..."
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       addItem('job_titles', e.target.value);
@@ -306,7 +305,7 @@ function UserProfile() {
                     <span className="text-sm">{title}</span>
                     <button
                       onClick={() => removeItem('job_titles', index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
                     >
                       ×
                     </button>
@@ -326,7 +325,7 @@ function UserProfile() {
                 <input
                   type="text"
                   placeholder="Add an industry..."
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md"
+                  className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       addItem('industries', e.target.value);
@@ -354,7 +353,7 @@ function UserProfile() {
                     {industry}
                     <button
                       onClick={() => removeItem('industries', index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="flex items-center justify-center w-4 h-4 text-red-500 bg-white rounded-full hover:text-red-700"
                     >
                       ×
                     </button>
