@@ -35,7 +35,7 @@ function EventsTab({
   ];
 
   return (
-    <div className="w-full h-full flex flex-col space-y-6">
+    <div className="flex flex-col w-full h-full space-y-6">
       <div className="flex-shrink-0">
         <TabNavigation
           tabs={tabs}
