@@ -1,8 +1,9 @@
+// filepath: src/services/eventsApiClient.js
 import axios from 'axios';
 
 // Create a dedicated instance for the events microservice
 const eventsApiClient = axios.create({
-  baseURL: '/api', // Will use the proxy
+  baseURL: '/api/events',
   headers: {
     'Content-Type': 'application/json',
   },

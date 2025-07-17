@@ -12,11 +12,16 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': {
+      // רק בקשות אירועים עוברות לשרת ה-.NET
+      '/api/events': {
         target: 'https://localhost:7278',
         changeOrigin: true,
-        secure: false, // for self-signed certificates
-        rewrite: (path) => path.replace(/^\/api/, '/api'),
+        secure: false,
+      },
+      // כל שאר בקשות ה-API הולכות לשרת Node.js
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
       },
     },
   },

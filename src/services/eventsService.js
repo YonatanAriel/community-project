@@ -1,80 +1,28 @@
+// filepath: src/services/eventsService.js
 import eventsApiClient from './eventsApiClient';
 
-// ----- Events API -----
-
+// Get all events
 export const getEvents = async () => {
-  try {
-    return await eventsApiClient.get('/events');
-  } catch (error) {
-    console.error('Error fetching events:', error);
-    throw error;
-  }
+  return await eventsApiClient.get('/'); // שים לב שזה ריק כי ה-baseURL כבר מכיל '/api/events'
 };
-
-export const getEventById = async (id) => {
-  try {
-    return await eventsApiClient.get(`/events/${id}`);
-  } catch (error) {
-    console.error(`Error fetching event ${id}:`, error);
-    throw error;
-  }
-};
-
+// Create a new event
 export const createEvent = async (eventData) => {
-  try {
-    return await eventsApiClient.post('/events', eventData);
-  } catch (error) {
-    console.error('Error creating event:', error);
-    throw error;
-  }
+  return await eventsApiClient.post('/', eventData); // שוב, שים לב לדרך שבה אנחנו קוראים ל-endpoint
 };
 
+// Update an existing event
 export const updateEvent = async (id, eventData) => {
-  try {
-    return await eventsApiClient.put(`/events/${id}`, eventData);
-  } catch (error) {
-    console.error(`Error updating event ${id}:`, error);
-    throw error;
-  }
+  return await eventsApiClient.put(`/${id}`, eventData);
 };
 
+// Delete an event
 export const deleteEvent = async (id) => {
-  try {
-    return await eventsApiClient.delete(`/events/${id}`);
-  } catch (error) {
-    console.error(`Error deleting event ${id}:`, error);
-    throw error;
-  }
+  return await eventsApiClient.delete(`/${id}`);
 };
 
-// ----- Event Registrations API -----
-
+// Register for an event
 export const registerForEvent = async (registrationData) => {
-  try {
-    return await eventsApiClient.post('/eventregistrations', registrationData);
-  } catch (error) {
-    console.error('Error registering for event:', error);
-    throw error;
-  }
+  return await eventsApiClient.post('/register', registrationData);
 };
 
-export const cancelRegistration = async (registrationId) => {
-  try {
-    return await eventsApiClient.delete(
-      `/eventregistrations/${registrationId}`
-    );
-  } catch (error) {
-    console.error(`Error canceling registration ${registrationId}:`, error);
-    throw error;
-  }
-};
-
-export const getUserEventRegistrations = async (userId) => {
-  try {
-    // If your API supports filtering
-    return await eventsApiClient.get(`/eventregistrations?userId=${userId}`);
-  } catch (error) {
-    console.error(`Error fetching registrations for user ${userId}:`, error);
-    throw error;
-  }
-};
+// Other event-related API calls can be added here
