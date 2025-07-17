@@ -9,9 +9,7 @@ function AdminDashboard() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <Home size={32} className="text-primary" />
-            <h1 className="text-3xl font-bold text-foreground">
-              Admin Dashboard
-            </h1>
+            <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           </div>
           <p className="mt-2 text-muted-foreground">
             Manage community members and their profiles

@@ -125,7 +125,7 @@ function UserProfile() {
               </svg>
               Back
             </button>
-            <h1 className="text-3xl font-bold text-foreground">User Profile</h1>
+            <h1 className="text-3xl font-bold text-foreground">Profile</h1>
           </div>
 
           <div className="flex items-center gap-2">

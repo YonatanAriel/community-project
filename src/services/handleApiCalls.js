@@ -20,9 +20,11 @@ const api = {
 
 async function apiCalls(method, url, data, headers = {}) {
   try {
+    const token = localStorage.getItem('token');
+
     const res = await axios({
       headers: {
-        Authorization: localStorage.token && `Bearer ${localStorage.token}`,
+        ...(token && { Authorization: `Bearer ${token}` }),
         ...headers,
       },
       method,
@@ -32,7 +34,14 @@ async function apiCalls(method, url, data, headers = {}) {
     return res.data;
   } catch (error) {
     console.log(error);
-    throw new Error(String(error));
+
+    // Handle authentication errors
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+
+    throw new Error(error.response?.data?.error || String(error));
   }
 }
 
