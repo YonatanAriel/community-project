@@ -13,13 +13,10 @@ import ProtectedRoute from '@/components/ui/ProtectedRoute';
 
 import Events from '@/pages/Events';
 
-
-
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-
       <Route path="/linkedin-login" element={<LinkedinLogin />} />
       <Route
         path="/"
@@ -77,9 +74,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
-//       <Route path="/events" element={<Events />} />
-
+      {/* <Route path="/events" element={<Events />} /> */}
     </Routes>
   );
 }

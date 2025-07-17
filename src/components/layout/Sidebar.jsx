@@ -42,8 +42,8 @@ function Sidebar() {
 
       <nav className="flex-1 px-4 space-y-2">
         {visibleNavigationItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.href;
+          const Icon = item?.icon;
+          const isActive = location?.pathname === item?.href;
 
           return (
             <Link
