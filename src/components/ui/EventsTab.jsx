@@ -13,6 +13,7 @@ function EventsTab({
   onDeleteEvent,
   isLoading = false,
   onJoinEvent,
+  isAdmin = false,
 }) {
   const tabs = [
     {
@@ -56,6 +57,7 @@ function EventsTab({
           onDeleteEvent={onDeleteEvent}
           isLoading={isLoading}
           onJoinEvent={onJoinEvent}
+          isAdmin={isAdmin}
         />
       </div>
     </div>

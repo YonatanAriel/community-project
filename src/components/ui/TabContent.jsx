@@ -17,6 +17,7 @@ function TabContent({
   onDeleteEvent,
   isLoading = false,
   onJoinEvent,
+  isAdmin = false,
 }) {
   const renderContent = () => {
     if (isLoading) {
@@ -40,6 +41,7 @@ function TabContent({
               onEdit={onEditEvent}
               onDelete={onDeleteEvent}
               onJoinEvent={onJoinEvent}
+              isAdmin={isAdmin}
             />
           </div>
         );
@@ -55,6 +57,7 @@ function TabContent({
               onEdit={onEditEvent}
               onDelete={onDeleteEvent}
               onJoinEvent={onJoinEvent}
+              isAdmin={isAdmin}
             />
           </div>
         );
@@ -70,6 +73,7 @@ function TabContent({
               onEdit={onEditEvent}
               onDelete={onDeleteEvent}
               onJoinEvent={onJoinEvent}
+              isAdmin={isAdmin}
             />
           </div>
         );

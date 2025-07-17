@@ -1,7 +1,11 @@
 import { UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-function JoinEventButton({ eventId, onJoinEvent }) {
+function JoinEventButton({ eventId, onJoinEvent, isAdmin = false }) {
+  if (isAdmin) {
+    return null;
+  }
+
   return (
     <Button
       variant="outline"

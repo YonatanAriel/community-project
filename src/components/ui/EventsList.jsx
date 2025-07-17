@@ -3,7 +3,14 @@ import { Button } from '@/components/ui/button';
 import EventActionButtons from '@/components/ui/EventActionButtons';
 import JoinEventButton from '@/components/ui/JoinEventButton';
 
-function EventsList({ events = [], onView, onEdit, onDelete, onJoinEvent }) {
+function EventsList({
+  events = [],
+  onView,
+  onEdit,
+  onDelete,
+  onJoinEvent,
+  isAdmin = false,
+}) {
   if (events.length === 0) {
     return (
       <div className="p-8 text-center text-muted-foreground">
@@ -30,10 +37,8 @@ function EventsList({ events = [], onView, onEdit, onDelete, onJoinEvent }) {
               <h4 className="mb-2 text-lg font-semibold text-foreground">
                 {event.title}
               </h4>
-              <p className="mb-3 text-muted-foreground">
-                {event.description}
-              </p>
-              
+              <p className="mb-3 text-muted-foreground">{event.description}</p>
+
               <div className="flex flex-wrap gap-4 mb-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
@@ -49,15 +54,17 @@ function EventsList({ events = [], onView, onEdit, onDelete, onJoinEvent }) {
                 </div>
                 <div className="flex items-center gap-1">
                   <Users className="w-4 h-4" />
-                  <span>{event.attendees}/{event.maxAttendees}</span>
+                  <span>
+                    {event.attendees}/{event.maxAttendees}
+                  </span>
                 </div>
               </div>
-              
+
               <div className="text-sm text-muted-foreground">
                 <span>Organizer: {event.organizer}</span>
               </div>
             </div>
-            
+
             <div className="flex gap-2 ml-4">
               <Button
                 variant="outline"
@@ -68,16 +75,18 @@ function EventsList({ events = [], onView, onEdit, onDelete, onJoinEvent }) {
                 <Eye className="w-4 h-4" />
                 View
               </Button>
-              
+
               <EventActionButtons
                 eventId={event.id}
                 onEdit={onEdit}
                 onDelete={onDelete}
+                isAdmin={isAdmin}
               />
-              
+
               <JoinEventButton
                 eventId={event.id}
                 onJoinEvent={onJoinEvent}
+                isAdmin={isAdmin}
               />
             </div>
           </div>
