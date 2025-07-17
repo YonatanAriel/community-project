@@ -5,6 +5,13 @@ import { Button } from '@/components/ui/button';
 import EventsTab from '@/components/ui/EventsTab';
 import NewEventForm from '@/components/ui/popups/NewEventForm';
 import EventRegistrationForm from '@/components/ui/popups/EventRegistrationForm';
+import {
+  getEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  registerForEvent,
+} from '@/services/eventsService';
 
 function Events() {
   const navigate = useNavigate();
@@ -14,81 +21,105 @@ function Events() {
   const [editingEvent, setEditingEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isRegistrationFormOpen, setIsRegistrationFormOpen] = useState(false);
-  const [selectedEventForRegistration, setSelectedEventForRegistration] = useState(null);
+  const [selectedEventForRegistration, setSelectedEventForRegistration] =
+    useState(null);
   const [registrations, setRegistrations] = useState([]);
-  
-  // State for events - prepared for future API integration
-  const [myEvents, setMyEvents] = useState([
-    {
-      id: 1,
-      title: 'Tech Meetup 2025',
-      description: 'Join us for the latest tech trends and networking',
-      date: '2025-08-15',
-      time: '18:00',
-      location: 'Tel Aviv Tech Hub',
-      organizer: 'Me',
-      attendees: 45,
-      maxAttendees: 100,
-      eventType: 'meetup'
-    },
-    {
-      id: 2,
-      title: 'React Workshop',
-      description: 'Advanced React patterns and best practices',
-      date: '2025-08-20',
-      time: '10:00',
-      location: 'Online',
-      organizer: 'Me',
-      attendees: 78,
-      maxAttendees: 150,
-      eventType: 'webinar'
-    },
-    {
-      id: 3,
-      title: 'JavaScript Conference',
-      description: 'The biggest JS conference in Israel',
-      date: '2025-07-10',
-      time: '09:00',
-      location: 'Jerusalem Convention Center',
-      organizer: 'Me',
-      attendees: 250,
-      maxAttendees: 300,
-      eventType: 'conference'
-    },
-    {
-      id: 4,
-      title: 'Community Networking Event',
-      description: 'Building connections in the tech community',
-      date: '2025-09-01',
-      time: '19:00',
-      location: 'Herzliya Pituach',
-      organizer: 'Me',
-      attendees: 25,
-      maxAttendees: 50,
-      eventType: 'jobfair'
-    }
-  ]);
 
-  // TODO: Replace with actual API call
+  // State for events
+  const [myEvents, setMyEvents] = useState([]);
+
+  // Format TimeSpan from backend (hh:mm:ss to hh:mm)
+  const formatTimeSpan = (timeSpan) => {
+    if (!timeSpan) return '';
+    return timeSpan.substring(0, 5);
+  };
+
   useEffect(() => {
-    // const fetchEvents = async () => {
-    //   try {
-    //     setIsLoading(true);
-    //     const events = await getMyEvents();
-    //     setMyEvents(events);
-    //   } catch (error) {
-    //     console.error('Error fetching events:', error);
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
-    // };
-    // fetchEvents();
+    const fetchEvents = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getEvents();
+
+        // Check if the response is an object with events property
+        const eventsData =
+          response && response.events
+            ? response.events
+            : Array.isArray(response)
+              ? response
+              : [];
+
+        // Check if we have any events data
+        if (!eventsData || eventsData.length === 0) {
+          console.log('No events data returned from API');
+          setMyEvents([]);
+          return;
+        }
+
+        // Log what we received for debugging
+        console.log('Events data received:', eventsData);
+
+        // Map backend model to frontend format
+        const mappedEvents = eventsData.map((event) => ({
+          id: event.id,
+          title: event.title,
+          description: event.description,
+          date: new Date(event.date).toISOString().split('T')[0],
+          time: formatTimeSpan(event.startTime),
+          endTime: formatTimeSpan(event.endTime),
+          location: event.location,
+          organizer: 'System', // Default value
+          attendees: 0, // This would need a separate API call or data inclusion
+          maxAttendees:
+            event.eventType === 'Meetup' ? event.maxParticipants : 100,
+          eventType: event.eventType.toLowerCase(),
+          isActive: event.isActive,
+          imageUrl: event.imageUrl || 'https://via.placeholder.com/300',
+
+          // Add event-type specific properties
+          ...(event.eventType === 'Meetup' && {
+            speakers: event.speakers,
+            topic: event.topic,
+            maxParticipants: event.maxParticipants,
+          }),
+          ...(event.eventType === 'Webinar' && {
+            onlineLink: event.onlineLink,
+            hostName: event.hostName,
+            requiresRegistration: event.requiresRegistration,
+          }),
+          ...(event.eventType === 'Conference' && {
+            mainSpeaker: event.mainSpeaker,
+            sponsors: event.sponsors,
+          }),
+          ...(event.eventType === 'JobFair' && {
+            employersList: event.employersList,
+            boothsCount: event.boothsCount,
+            hasResumeDrop: event.hasResumeDrop,
+          }),
+        }));
+
+        setMyEvents(mappedEvents);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        // Set empty events array on error
+        setMyEvents([]);
+        // Show error message to user
+        alert('Failed to load events. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvents();
   }, []);
 
-  // סינון אירועים לפי תאריך
+  // Filter events by date
   const today = new Date();
-  const upcomingEvents = myEvents.filter(event => new Date(event.date) > today);
-  const finishedEvents = myEvents.filter(event => new Date(event.date) <= today);
+  const upcomingEvents = myEvents.filter(
+    (event) => new Date(event.date) > today
+  );
+  const finishedEvents = myEvents.filter(
+    (event) => new Date(event.date) <= today
+  );
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
@@ -100,16 +131,24 @@ function Events() {
   };
 
   const handleEditEvent = (eventId) => {
-    const eventToEdit = myEvents.find(event => event.id === eventId);
+    const eventToEdit = myEvents.find((event) => event.id === eventId);
     if (eventToEdit) {
       setEditingEvent(eventToEdit);
       setIsEditEventFormOpen(true);
     }
   };
 
-  const handleDeleteEvent = (eventId) => {
-    console.log('Delete event:', eventId);
-    setMyEvents(prev => prev.filter(event => event.id !== eventId));
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      setIsLoading(true);
+      await deleteEvent(eventId);
+      setMyEvents((prev) => prev.filter((event) => event.id !== eventId));
+    } catch (error) {
+      console.error(`Error deleting event ${eventId}:`, error);
+      alert(`Failed to delete event: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCreateEvent = () => {
@@ -125,50 +164,134 @@ function Events() {
     setEditingEvent(null);
   };
 
-  const handleUpdateEvent = (eventData) => {
-    console.log('Update event:', eventData);
-    
-    setMyEvents(prev => 
-      prev.map(event => 
-        event.id === editingEvent.id 
-          ? { ...event, ...eventData }
-          : event
-      )
-    );
-    
-    setIsEditEventFormOpen(false);
-    setEditingEvent(null);
+  const handleUpdateEvent = async (eventData) => {
+    try {
+      setIsLoading(true);
+
+      // Map frontend model to backend DTO
+      const eventDto = {
+        title: eventData.title,
+        description: eventData.description,
+        date: eventData.date,
+        startTime: eventData.time,
+        endTime: eventData.endTime,
+        location: eventData.location,
+        isActive: true,
+        imageUrl: eventData.imageUrl || 'https://via.placeholder.com/300',
+        eventType:
+          eventData.eventType.charAt(0).toUpperCase() +
+          eventData.eventType.slice(1),
+
+        // Type-specific fields
+        ...(eventData.eventType === 'meetup' && {
+          speakers: eventData.speakers,
+          topic: eventData.topic,
+          maxParticipants: parseInt(eventData.maxParticipants) || 50,
+        }),
+        ...(eventData.eventType === 'webinar' && {
+          onlineLink: eventData.onlineLink,
+          hostName: eventData.hostName,
+          requiresRegistration: eventData.requiresRegistration,
+        }),
+        ...(eventData.eventType === 'conference' && {
+          mainSpeaker: eventData.mainSpeaker,
+          sponsors: eventData.sponsors,
+        }),
+        ...(eventData.eventType === 'jobfair' && {
+          employersList: eventData.employersList,
+          boothsCount: parseInt(eventData.boothsCount) || 10,
+          hasResumeDrop: eventData.hasResumeDrop,
+        }),
+      };
+
+      const updatedEvent = await updateEvent(editingEvent.id, eventDto);
+
+      setMyEvents((prev) =>
+        prev.map((event) =>
+          event.id === editingEvent.id
+            ? {
+                ...event,
+                ...eventData,
+                eventType: eventData.eventType.toLowerCase(),
+              }
+            : event
+        )
+      );
+
+      setIsEditEventFormOpen(false);
+      setEditingEvent(null);
+    } catch (error) {
+      console.error('Error updating event:', error);
+      alert(`Failed to update event: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSaveEvent = async (eventData) => {
     try {
-      // Generate temporary ID (in production, this will come from the server)
-      const newEvent = {
-        id: Date.now(), // Temporary ID generation
-        ...eventData,
-        organizer: 'Me',
-        attendees: 0, // Default value
-        maxAttendees: eventData.maxAttendees || 50 // Default to 50 if not provided
+      setIsLoading(true);
+
+      // Map frontend model to backend DTO
+      const eventDto = {
+        title: eventData.title,
+        description: eventData.description,
+        date: eventData.date,
+        startTime: eventData.time,
+        endTime: eventData.endTime,
+        location: eventData.location,
+        isActive: true,
+        imageUrl: eventData.imageUrl || 'https://via.placeholder.com/300',
+        eventType:
+          eventData.eventType.charAt(0).toUpperCase() +
+          eventData.eventType.slice(1),
+
+        // Type-specific fields
+        ...(eventData.eventType === 'meetup' && {
+          speakers: eventData.speakers,
+          topic: eventData.topic,
+          maxParticipants: parseInt(eventData.maxParticipants) || 50,
+        }),
+        ...(eventData.eventType === 'webinar' && {
+          onlineLink: eventData.onlineLink,
+          hostName: eventData.hostName,
+          requiresRegistration: eventData.requiresRegistration,
+        }),
+        ...(eventData.eventType === 'conference' && {
+          mainSpeaker: eventData.mainSpeaker,
+          sponsors: eventData.sponsors,
+        }),
+        ...(eventData.eventType === 'jobfair' && {
+          employersList: eventData.employersList,
+          boothsCount: parseInt(eventData.boothsCount) || 10,
+          hasResumeDrop: eventData.hasResumeDrop,
+        }),
       };
 
-      // TODO: Replace with actual API call
-      // const savedEvent = await createEvent(newEvent);
-      // setMyEvents(prev => [...prev, savedEvent]);
-      
-      // For now, add to local state
-      setMyEvents(prev => [...prev, newEvent]);
-      
-      console.log('Event saved successfully:', newEvent);
+      const createdEvent = await createEvent(eventDto);
+
+      // Add new event to list
+      const newEvent = {
+        id: createdEvent.id,
+        ...eventData,
+        eventType: eventData.eventType.toLowerCase(),
+        organizer: 'Me',
+        attendees: 0,
+        maxAttendees: eventData.maxAttendees || 50,
+      };
+
+      setMyEvents((prev) => [...prev, newEvent]);
       setIsNewEventFormOpen(false);
     } catch (error) {
       console.error('Error saving event:', error);
-      // TODO: Show error message to user
+      alert(`Failed to create event: ${error.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleJoinEvent = (eventId) => {
-    console.log('Join event:', eventId);
-    const eventToJoin = myEvents.find(event => event.id === eventId);
+    const eventToJoin = myEvents.find((event) => event.id === eventId);
     if (eventToJoin) {
       setSelectedEventForRegistration(eventToJoin);
       setIsRegistrationFormOpen(true);
@@ -180,21 +303,56 @@ function Events() {
     setSelectedEventForRegistration(null);
   };
 
-  const handleEventRegistration = (registrationData) => {
-    console.log('Event registration:', registrationData);
-    
-    // Add to registrations list
-    setRegistrations(prev => [...prev, registrationData]);
-    
-    // TODO: Send to server
-    // const response = await registerForEvent(registrationData);
-    
-    // Close form
-    setIsRegistrationFormOpen(false);
-    setSelectedEventForRegistration(null);
-    
-    // Show success message
-    alert(`Successfully registered for "${registrationData.eventTitle}"!`);
+  const handleEventRegistration = async (registrationData) => {
+    try {
+      setIsLoading(true);
+
+      // Map to backend DTO
+      const regDto = {
+        eventId: registrationData.eventId,
+        userId: 1, // This should be the logged-in user's ID
+        registrationDate: new Date().toISOString(),
+      };
+
+      const response = await registerForEvent(regDto);
+
+      // Add to registrations list
+      setRegistrations((prev) => [
+        ...prev,
+        {
+          ...registrationData,
+          id: response.id,
+        },
+      ]);
+
+      // Update attendee count for this event
+      setMyEvents((prev) =>
+        prev.map((event) =>
+          event.id === registrationData.eventId
+            ? { ...event, attendees: event.attendees + 1 }
+            : event
+        )
+      );
+
+      // Close form
+      setIsRegistrationFormOpen(false);
+      setSelectedEventForRegistration(null);
+
+      // Show success message
+      alert(`Successfully registered for "${registrationData.eventTitle}"!`);
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      if (
+        error.response?.status === 409 ||
+        error.message?.includes('already registered')
+      ) {
+        alert('You are already registered for this event.');
+      } else {
+        alert(`Registration failed: ${error.message}`);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -203,16 +361,14 @@ function Events() {
         <div className="flex-shrink-0 mb-8">
           <div className="flex items-center gap-3 mb-2">
             <Calendar className="w-8 h-8 text-primary" />
-            <h1 className="text-3xl font-bold text-foreground">
-              Events
-            </h1>
+            <h1 className="text-3xl font-bold text-foreground">Events</h1>
           </div>
-          <p className="text-muted-foreground">
-            Manage all community events
-          </p>
+          <p className="text-muted-foreground">Manage all community events</p>
         </div>
 
-        <div className={`flex-1 min-h-0 ${isNewEventFormOpen || isEditEventFormOpen ? 'opacity-50 pointer-events-none' : ''}`}>
+        <div
+          className={`flex-1 min-h-0 ${isNewEventFormOpen || isEditEventFormOpen ? 'opacity-50 pointer-events-none' : ''}`}
+        >
           <EventsTab
             upcomingEvents={upcomingEvents}
             finishedEvents={finishedEvents}
@@ -240,7 +396,10 @@ function Events() {
         {/* New Event Form Modal */}
         {isNewEventFormOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/50" onClick={handleCloseNewEventForm} />
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={handleCloseNewEventForm}
+            />
             <div className="relative bg-card border rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <NewEventForm
                 onSave={handleSaveEvent}
@@ -253,7 +412,10 @@ function Events() {
         {/* Edit Event Form Modal */}
         {isEditEventFormOpen && editingEvent && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/50" onClick={handleCloseEditEventForm} />
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={handleCloseEditEventForm}
+            />
             <div className="relative bg-card border rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <NewEventForm
                 initialData={editingEvent}
@@ -268,7 +430,10 @@ function Events() {
         {/* Event Registration Form Modal */}
         {isRegistrationFormOpen && selectedEventForRegistration && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/50" onClick={handleCloseRegistrationForm} />
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={handleCloseRegistrationForm}
+            />
             <div className="relative bg-card border rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
               <EventRegistrationForm
                 event={selectedEventForRegistration}

@@ -10,4 +10,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://localhost:7278',
+        changeOrigin: true,
+        secure: false, // for self-signed certificates
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
+      },
+    },
+  },
 });
