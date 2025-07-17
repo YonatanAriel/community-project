@@ -201,96 +201,95 @@ function Events() {
   };
 
   return (
-    <div></div>
-    // <div className="flex flex-col h-screen overflow-hidden">
-    //   <div className="container flex flex-col flex-1 px-4 py-8 mx-auto">
-    //     <div className="flex-shrink-0 mb-8">
-    //       <div className="flex items-center gap-3 mb-2">
-    //         <Calendar className="w-8 h-8 text-primary" />
-    //         <h1 className="text-3xl font-bold text-foreground">Events</h1>
-    //       </div>
-    //       <p className="text-muted-foreground">Manage all community events</p>
-    //     </div>
+    <div className="flex flex-col h-screen overflow-hidden">
+      <div className="container flex flex-col flex-1 px-4 py-8 mx-auto">
+        <div className="flex-shrink-0 mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <Calendar className="w-8 h-8 text-primary" />
+            <h1 className="text-3xl font-bold text-foreground">Events</h1>
+          </div>
+          <p className="text-muted-foreground">Manage all community events</p>
+        </div>
 
-    //     <div
-    //       className={`flex-1 min-h-0 ${isNewEventFormOpen || isEditEventFormOpen ? 'opacity-50 pointer-events-none' : ''}`}
-    //     >
-    //       <EventsTab
-    //         upcomingEvents={upcomingEvents}
-    //         finishedEvents={finishedEvents}
-    //         myEvents={myEvents}
-    //         activeTab={activeTab}
-    //         onTabChange={handleTabChange}
-    //         onViewEvent={handleViewEvent}
-    //         onEditEvent={handleEditEvent}
-    //         onDeleteEvent={handleDeleteEvent}
-    //         isLoading={isLoading}
-    //         onJoinEvent={handleJoinEvent}
-    //       />
-    //     </div>
+        <div
+          className={`flex-1 min-h-0 ${isNewEventFormOpen || isEditEventFormOpen ? 'opacity-50 pointer-events-none' : ''}`}
+        >
+          <EventsTab
+            upcomingEvents={upcomingEvents}
+            finishedEvents={finishedEvents}
+            myEvents={myEvents}
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+            onViewEvent={handleViewEvent}
+            onEditEvent={handleEditEvent}
+            onDeleteEvent={handleDeleteEvent}
+            isLoading={isLoading}
+            onJoinEvent={handleJoinEvent}
+          />
+        </div>
 
-    //     {/* Floating Action Button */}
-    //     <Button
-    //       onClick={handleCreateEvent}
-    //       className="fixed transition-shadow rounded-full shadow-lg bottom-6 right-6 w-14 h-14 hover:shadow-xl"
-    //       size="icon"
-    //       disabled={isNewEventFormOpen || isEditEventFormOpen}
-    //     >
-    //       <Plus className="w-6 h-6" />
-    //     </Button>
+        {/* Floating Action Button */}
+        <Button
+          onClick={handleCreateEvent}
+          className="fixed transition-shadow rounded-full shadow-lg bottom-6 right-6 w-14 h-14 hover:shadow-xl"
+          size="icon"
+          disabled={isNewEventFormOpen || isEditEventFormOpen}
+        >
+          <Plus className="w-6 h-6" />
+        </Button>
 
-    //     {/* New Event Form Modal */}
-    //     {isNewEventFormOpen && (
-    //       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-    //         <div
-    //           className="absolute inset-0 bg-black/50"
-    //           onClick={handleCloseNewEventForm}
-    //         />
-    //         <div className="relative bg-card border rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-    //           <NewEventForm
-    //             onSave={handleSaveEvent}
-    //             onCancel={handleCloseNewEventForm}
-    //           />
-    //         </div>
-    //       </div>
-    //     )}
+        {/* New Event Form Modal */}
+        {isNewEventFormOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={handleCloseNewEventForm}
+            />
+            <div className="relative bg-card border rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <NewEventForm
+                onSave={handleSaveEvent}
+                onCancel={handleCloseNewEventForm}
+              />
+            </div>
+          </div>
+        )}
 
-    //     {/* Edit Event Form Modal */}
-    //     {isEditEventFormOpen && editingEvent && (
-    //       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-    //         <div
-    //           className="absolute inset-0 bg-black/50"
-    //           onClick={handleCloseEditEventForm}
-    //         />
-    //         <div className="relative bg-card border rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-    //           <NewEventForm
-    //             initialData={editingEvent}
-    //             onSave={handleUpdateEvent}
-    //             onCancel={handleCloseEditEventForm}
-    //             isEditing={true}
-    //           />
-    //         </div>
-    //       </div>
-    //     )}
+        {/* Edit Event Form Modal */}
+        {isEditEventFormOpen && editingEvent && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={handleCloseEditEventForm}
+            />
+            <div className="relative bg-card border rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <NewEventForm
+                initialData={editingEvent}
+                onSave={handleUpdateEvent}
+                onCancel={handleCloseEditEventForm}
+                isEditing={true}
+              />
+            </div>
+          </div>
+        )}
 
-    //     {/* Event Registration Form Modal */}
-    //     {isRegistrationFormOpen && selectedEventForRegistration && (
-    //       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-    //         <div
-    //           className="absolute inset-0 bg-black/50"
-    //           onClick={handleCloseRegistrationForm}
-    //         />
-    //         <div className="relative bg-card border rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-    //           <EventRegistrationForm
-    //             event={selectedEventForRegistration}
-    //             onRegister={handleEventRegistration}
-    //             onCancel={handleCloseRegistrationForm}
-    //           />
-    //         </div>
-    //       </div>
-    //     )}
-    //   </div>
-    // </div>
+        {/* Event Registration Form Modal */}
+        {isRegistrationFormOpen && selectedEventForRegistration && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={handleCloseRegistrationForm}
+            />
+            <div className="relative bg-card border rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+              <EventRegistrationForm
+                event={selectedEventForRegistration}
+                onRegister={handleEventRegistration}
+                onCancel={handleCloseRegistrationForm}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 

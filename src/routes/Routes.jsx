@@ -74,7 +74,14 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      {/* <Route path="/events" element={<Events />} /> */}
+      <Route
+        path="/events"
+        element={
+          <ProtectedRoute>
+            <Events />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
