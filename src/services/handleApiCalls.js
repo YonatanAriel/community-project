@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:4000';
+// נשתמש בפרוקסי של Vite במקום URL בסיסי קבוע
+// כך בקשות יעברו לשרת המתאים לפי התצורה בקובץ vite.config.js
 
 const api = {
   get: async (url, headers) => {
