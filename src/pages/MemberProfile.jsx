@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { membersMockData } from '@/data/mockData';
+import { useUserStore } from '../store/userStore';
 import { Button } from '@/components/ui/button';
 import ProfileHeader from '@/components/ui/ProfileHeader';
 import ProfileCard from '@/components/ui/ProfileCard';
@@ -12,8 +12,9 @@ import ConnectButton from '@/components/ui/ConnectButton';
 function MemberProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { allUsers } = useUserStore();
 
-  const member = membersMockData.find((m) => m.id === parseInt(id));
+  const member = allUsers.find((m) => m.id === parseInt(id));
 
   if (!member) {
     return (
