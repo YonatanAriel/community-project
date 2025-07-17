@@ -307,21 +307,29 @@ function Events() {
     try {
       setIsLoading(true);
 
-      // Map to backend DTO
+      console.log('Registration data:', registrationData);
+
+      // שלב 1: יצירת רישום לאירוע עם ה-DTO בפורמט הנדרש על ידי שרת הדוט-נט
       const regDto = {
         eventId: registrationData.eventId,
-        userId: 1, // This should be the logged-in user's ID
+        userId: 1, // אפשר להחליף למזהה משתמש אמיתי אם יש כזה
+        fullName: registrationData.fullName,
+        email: registrationData.email,
         registrationDate: new Date().toISOString(),
       };
 
+      console.log('Sending registration data to server:', regDto);
+
       const response = await registerForEvent(regDto);
+
+      console.log('Server response:', response);
 
       // Add to registrations list
       setRegistrations((prev) => [
         ...prev,
         {
           ...registrationData,
-          id: response.id,
+          id: response?.data?.id || response?.id || Date.now(), // השתמש במזהה מהשרת או צור זמני
         },
       ]);
 

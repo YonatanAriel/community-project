@@ -1,5 +1,6 @@
 // filepath: src/services/eventsService.js
 import eventsApiClient from './eventsApiClient';
+import axios from 'axios';
 
 // Get all events
 export const getEvents = async () => {
@@ -22,7 +23,12 @@ export const deleteEvent = async (id) => {
 
 // Register for an event
 export const registerForEvent = async (registrationData) => {
-  return await eventsApiClient.post('/register', registrationData);
+  // שימוש בלקוח API נפרד עם הנתיב המדויק
+  return await axios.post('/api/EventRegistrations', registrationData, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 };
 
 // Other event-related API calls can be added here
