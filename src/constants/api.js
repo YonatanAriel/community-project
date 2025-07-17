@@ -10,6 +10,7 @@ export const API = {
     REMOVE_CONNECTION: '/api/connections/remove',
 
     USERS: '/users',
+    USERS_FULL_DATA: '/users/full-data',
     USER_PROFILE: '/api/users/profile',
 
     AI_RECOMMENDATIONS: '/api/ai-recommendations',

@@ -1,7 +1,11 @@
 import { Edit2, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-function EventActionButtons({ eventId, onEdit, onDelete }) {
+function EventActionButtons({ eventId, onEdit, onDelete, isAdmin = false }) {
+  if (!isAdmin) {
+    return null;
+  }
+
   return (
     <>
       <Button
@@ -13,7 +17,7 @@ function EventActionButtons({ eventId, onEdit, onDelete }) {
         <Edit2 className="w-4 h-4" />
         Edit
       </Button>
-      
+
       <Button
         variant="outline"
         size="sm"

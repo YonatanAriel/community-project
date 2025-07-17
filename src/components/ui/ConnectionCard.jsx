@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { UserMinus, Mail, Calendar } from 'lucide-react';
+import { UserMinus, Mail, Calendar, User } from 'lucide-react';
 import { formatTimeAgo } from '@/utils/utils';
 
 function ConnectionCard({ connection, onRemove }) {
@@ -23,6 +23,19 @@ function ConnectionCard({ connection, onRemove }) {
   return (
     <div className="w-full p-4 border rounded-lg bg-card border-border">
       <div className="flex items-start gap-4">
+        <div className="flex-shrink-0">
+          {user.photo_url ? (
+            <img
+              src={user.photo_url}
+              alt={user.user_name}
+              className="w-12 h-12 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+              <User size={24} className="text-muted-foreground" />
+            </div>
+          )}
+        </div>
         <div className="flex-1">
           <div className="flex items-center justify-between mb-2">
             <h4 className="font-semibold text-foreground">

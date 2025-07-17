@@ -5,6 +5,7 @@ export const useUserStore = create((set) => ({
   token: localStorage.getItem('token') || null,
   isAuthenticated: false,
   isAdmin: false,
+  allUsers: [],
 
   setAuth: (token, user) => {
     localStorage.setItem('token', token);
@@ -27,4 +28,6 @@ export const useUserStore = create((set) => ({
   },
 
   setUser: (user) => set({ user }),
+
+  setAllUsers: (users) => set({ allUsers: users }),
 }));

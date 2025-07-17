@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import EventsTab from '@/components/ui/EventsTab';
 import NewEventForm from '@/components/ui/popups/NewEventForm';
 import EventRegistrationForm from '@/components/ui/popups/EventRegistrationForm';
+
+import { useUserStore } from '@/store/userStore';
+
 import {
   getEvents,
   createEvent,
@@ -13,8 +16,10 @@ import {
   registerForEvent,
 } from '@/services/eventsService';
 
+
 function Events() {
   const navigate = useNavigate();
+  const { isAdmin } = useUserStore();
   const [activeTab, setActiveTab] = useState('my-events');
   const [isNewEventFormOpen, setIsNewEventFormOpen] = useState(false);
   const [isEditEventFormOpen, setIsEditEventFormOpen] = useState(false);
@@ -152,6 +157,10 @@ function Events() {
   };
 
   const handleCreateEvent = () => {
+    if (!isAdmin) {
+      alert('Only admins can create events');
+      return;
+    }
     setIsNewEventFormOpen(true);
   };
 
@@ -380,21 +389,24 @@ function Events() {
             onDeleteEvent={handleDeleteEvent}
             isLoading={isLoading}
             onJoinEvent={handleJoinEvent}
+            isAdmin={isAdmin}
           />
         </div>
 
         {/* Floating Action Button */}
-        <Button
-          onClick={handleCreateEvent}
-          className="fixed transition-shadow rounded-full shadow-lg bottom-6 right-6 w-14 h-14 hover:shadow-xl"
-          size="icon"
-          disabled={isNewEventFormOpen || isEditEventFormOpen}
-        >
-          <Plus className="w-6 h-6" />
-        </Button>
+        {isAdmin && (
+          <Button
+            onClick={handleCreateEvent}
+            className="fixed transition-shadow rounded-full shadow-lg bottom-6 right-6 w-14 h-14 hover:shadow-xl"
+            size="icon"
+            disabled={isNewEventFormOpen || isEditEventFormOpen}
+          >
+            <Plus className="w-6 h-6" />
+          </Button>
+        )}
 
         {/* New Event Form Modal */}
-        {isNewEventFormOpen && (
+        {isNewEventFormOpen && isAdmin && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
               className="absolute inset-0 bg-black/50"
@@ -410,7 +422,7 @@ function Events() {
         )}
 
         {/* Edit Event Form Modal */}
-        {isEditEventFormOpen && editingEvent && (
+        {isEditEventFormOpen && editingEvent && isAdmin && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
               className="absolute inset-0 bg-black/50"

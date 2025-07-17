@@ -1,6 +1,15 @@
 import api from './handleApiCalls';
 import { API } from '@/constants/api';
 
+export const getUsersFullData = async () => {
+  try {
+    return await api.get(API.ENDPOINTS.USERS_FULL_DATA);
+  } catch (error) {
+    console.error('Error fetching users full data:', error);
+    throw error;
+  }
+};
+
 export const signIn = async (email, password) => {
   try {
     return await api.post(API.ENDPOINTS.SIGN_IN, { email, password });

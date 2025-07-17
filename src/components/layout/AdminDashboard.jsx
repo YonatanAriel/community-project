@@ -1,8 +1,31 @@
 import MembersTable from '../ui/MembersTable';
-import { membersMockData } from '../../data/mockData';
 import { Home } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { getUsersFullData } from '../../services/apiCalls';
+import { useUserStore } from '../../store/userStore';
 
 function AdminDashboard() {
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { setAllUsers } = useUserStore();
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const response = await getUsersFullData();
+        setMembers(response);
+        setAllUsers(response);
+      } catch (error) {
+        console.log(error);
+        setError('Failed to load members');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMembers();
+  }, [setAllUsers]);
+
   return (
     <div className="flex flex-col w-full h-full">
       <div className="flex-1 w-full px-8 py-8">
@@ -18,7 +41,16 @@ function AdminDashboard() {
 
         <div className="space-y-6">
           <div>
-            <MembersTable members={membersMockData} />
+            {loading ? (
+              <div>Loading members...</div>
+            ) : error ? (
+              <>
+                <div className="mb-2 text-red-500">{error}</div>
+                <MembersTable members={members} />
+              </>
+            ) : (
+              <MembersTable members={members} />
+            )}
           </div>
         </div>
       </div>

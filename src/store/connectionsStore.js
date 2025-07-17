@@ -7,65 +7,29 @@ import {
   removeConnection,
   sendConnectionRequest,
 } from '@/services/apiCalls';
+import { useUserStore } from '@/store/userStore';
 
 export const useConnectionsStore = create((set, get) => ({
   connectionRequests: [],
   connections: [],
-  users: {},
   isLoading: false,
   error: null,
-
-  getUserData: (userId, userName) => {
-    const users = get().users;
-    return (
-      users[userId] || {
-        id: userId,
-        user_name: userName || `User ${userId}`,
-        email: `user${userId}@example.com`,
-        photo_url: null,
-      }
-    );
-  },
-
-  fetchUserData: async (userIds) => {
-    try {
-      const newUsers = {};
-      userIds.forEach((userId) => {
-        newUsers[userId] = {
-          id: userId,
-          user_name: `User ${userId}`,
-          email: `user${userId}@example.com`,
-          photo_url: null,
-        };
-      });
-
-      set((state) => ({
-        ...state,
-        users: { ...state.users, ...newUsers },
-      }));
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  },
-
-  extractUserIdsFromRequests: (requests) => {
-    const userIds = new Set();
-    requests.forEach((request) => {
-      if (request.from_user_id) userIds.add(request.from_user_id);
-      if (request.to_user_id) userIds.add(request.to_user_id);
-    });
-    return Array.from(userIds);
-  },
 
   transformRequestsWithUserData: (requests) => {
     return requests.map((request) => ({
       ...request,
-      from_user:
-        request.from_user ||
-        get().getUserData(request.from_user_id, request.from_user_name),
-      to_user:
-        request.to_user ||
-        get().getUserData(request.to_user_id, request.to_user_name),
+      from_user: {
+        id: request.from_user_id,
+        user_name: request.from_user_name || `User ${request.from_user_id}`,
+        photo_url: request.from_user_image || null,
+        email: `user${request.from_user_id}@example.com`,
+      },
+      to_user: {
+        id: request.to_user_id,
+        user_name: request.to_user_name || `User ${request.to_user_id}`,
+        photo_url: request.to_user_image || null,
+        email: `user${request.to_user_id}@example.com`,
+      },
     }));
   },
 
@@ -74,8 +38,6 @@ export const useConnectionsStore = create((set, get) => ({
       return [];
     }
 
-    const userIds = get().extractUserIdsFromRequests(requestsData);
-    await get().fetchUserData(userIds);
     return get().transformRequestsWithUserData(requestsData);
   },
 
@@ -101,34 +63,50 @@ export const useConnectionsStore = create((set, get) => ({
     }
   },
 
-  extractUserIdsFromConnections: (connections) => {
-    const userIds = new Set();
-    connections.forEach((connection) => {
-      if (connection.from_user_id) userIds.add(connection.from_user_id);
-      if (connection.to_user_id) userIds.add(connection.to_user_id);
+  transformConnectionsWithUserData: (connections, currentUserId) => {
+    return connections.map((connection) => {
+      const isFromUser = connection.from_user_id === currentUserId;
+      const otherUser = {
+        id: isFromUser ? connection.to_user_id : connection.from_user_id,
+        user_name: isFromUser
+          ? connection.to_user_name
+          : connection.from_user_name,
+        photo_url: isFromUser
+          ? connection.to_user_image
+          : connection.from_user_image,
+        email: `user${isFromUser ? connection.to_user_id : connection.from_user_id}@example.com`,
+      };
+
+      return {
+        ...connection,
+        user: otherUser,
+        from_user: {
+          id: connection.from_user_id,
+          user_name:
+            connection.from_user_name || `User ${connection.from_user_id}`,
+          photo_url: connection.from_user_image || null,
+          email: `user${connection.from_user_id}@example.com`,
+        },
+        to_user: {
+          id: connection.to_user_id,
+          user_name: connection.to_user_name || `User ${connection.to_user_id}`,
+          photo_url: connection.to_user_image || null,
+          email: `user${connection.to_user_id}@example.com`,
+        },
+        connected_at: connection.responded_at || connection.requested_at,
+      };
     });
-    return Array.from(userIds);
   },
 
-  transformConnectionsWithUserData: (connections) => {
-    return connections.map((connection) => ({
-      ...connection,
-      user: connection.user || get().getUserData(connection.from_user_id),
-      from_user:
-        connection.from_user || get().getUserData(connection.from_user_id),
-      to_user: connection.to_user || get().getUserData(connection.to_user_id),
-      connected_at: connection.responded_at || connection.requested_at,
-    }));
-  },
-
-  processConnectionsData: async (connectionsData) => {
+  processConnectionsData: async (connectionsData, currentUserId) => {
     if (!Array.isArray(connectionsData)) {
       return [];
     }
 
-    const userIds = get().extractUserIdsFromConnections(connectionsData);
-    await get().fetchUserData(userIds);
-    return get().transformConnectionsWithUserData(connectionsData);
+    return get().transformConnectionsWithUserData(
+      connectionsData,
+      currentUserId
+    );
   },
 
   fetchConnections: async () => {
@@ -137,8 +115,12 @@ export const useConnectionsStore = create((set, get) => ({
       const response = await getConnections();
       const connectionsData = response.data?.data || response.data || [];
 
-      const transformedConnections =
-        await get().processConnectionsData(connectionsData);
+      const currentUserId = useUserStore.getState().user?.id;
+
+      const transformedConnections = await get().processConnectionsData(
+        connectionsData,
+        currentUserId
+      );
 
       set({
         connections: transformedConnections,
